@@ -21,15 +21,11 @@ Class user_m extends My_Model {
     }
 
     public function login() {
-
         $user = $this->get_by(array(
             'email' => $this->input->post('email'),
             'password' => $this->hash($this->input->post('password'))
                 ), TRUE);
-        
-        echo "<pre>" . print_r($user). "</pre>";
-
-        if (!empty($user)) {
+        if (count($user)) {
             $data = array(
                 'name' => $user->name,
                 'email' => $user->email,
@@ -37,6 +33,7 @@ Class user_m extends My_Model {
                 'loggedin' => TRUE,
             );
             $this->session->set_userdata($data);
+            return TRUE;
         }
     }
 
@@ -45,8 +42,9 @@ Class user_m extends My_Model {
     }
 
     public function loggedin() {
-
-        return (bool) $this->session->set_userdata('loggedin');
+//        echo "<pre>" . print_r($_SESSION);
+//        echo "</pre>";
+        return (bool) $this->session->userdata('loggedin');
     }
 
     public function hash($string) {

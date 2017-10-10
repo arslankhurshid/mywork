@@ -24,7 +24,11 @@ Class My_Model extends CI_Model {
         } else {
             $method = 'result';
         }
-
+        echo $id;
+        $this->db->where('id', '1');
+        $q = $this->db->get($this->_table_name)->result_array();
+        print_r($q);
+        exit();
         if (!count($this->db->order_by($this->_order_by))) {
             $this->db->order_by($this->_order_by);
         }

@@ -12,19 +12,29 @@
             </ul>
         </div>
     </nav>
+    <?php
+    if ($this->session->flashdata('success')) {
+        echo $this->session->flashdata('success');
+    }
+    ?>
     <div class="container">
         <div class="row">
             <!--main column-->
-            <div class="pull-left">
+            <div class="col-md-8">
                 <section>
-                    <h2>Page Name</h2>
+                    <?php $this->load->view($subview); // subview is set in Controller?>
                 </section>
             </div>
+            <!--            <div class="pull-left">
+                            <section>
+            
+                            </section>
+                        </div>-->
             <!--Side bar-->
-            <div class="pull-right">
-                <section>
+            <div>
+                <section class="col-md-4">
                     <?php echo mailto('m.arslan.khurshid@gmail.com', '<span class="glyphicon glyphicon-user"></span> m.arslan.khurshid@gmail.com'); ?> <br>
-                    <?php echo anchor('admin/users/logout', '<span class="glyphicon glyphicon-off"></span> logout'); ?> <br>
+                    <?php echo anchor('admin/user/logout', '<span class="glyphicon glyphicon-off"></span> logout'); ?> <br>
                 </section>
             </div>
         </div>

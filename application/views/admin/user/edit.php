@@ -1,17 +1,11 @@
 <div class="modal-header">
-    <h3>Log in</h3>
+    <h3><?php 
+    echo "<pre>";
+    print_r($user);
+    echo "</pre>";
+    echo empty($user->id) ? 'Add a new user' : 'Edit' ?></h3>
     <p>Please log in using your credentials</p>
     <div class="modal-body">
-        <?php
-//        echo "<pre>";
-//        echo print_r($this->session->userdata, TRUE);
-//        print_r($this->session);
-//        echo "</pre>";
-//        echo "</pre>";
-//        echo "Session ID:" . session_id() . "<br>";
-//        echo "Remote Address: " . $_SERVER['REMOTE_ADDR'] . "<br>";
-//        echo "User Agent: " . $this->input->user_agent() . "<br>";
-        ?>
         <?php
         echo validation_errors();
         echo $this->session->flashdata('success');
@@ -26,10 +20,7 @@
                 <td>Email:</td>
                 <td><?php echo form_input('email'); ?></td>
             </tr>
-            <tr>
-                <td>Password:</td> 
-                <td><?php echo form_password('password'); ?></td>
-            </tr>
+
             <tr>
                 <td></td>
                 <td><?php echo form_submit('submit', 'login', 'class="btn btn-primary"'); ?></td>
