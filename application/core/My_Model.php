@@ -17,22 +17,19 @@ Class My_Model extends CI_Model {
         if ($id != Null) {
             $filter = $this->_primary_filter;
             $id = $filter($id);
-            $this->db->where($this->_primary_filter, $id);
+            $this->db->where($this->_primary_key, $id);
             $method = 'row';
         } elseif ($single == TRUE) {
             $method = 'row';
         } else {
             $method = 'result';
         }
-        echo $id;
-        $this->db->where('id', '1');
-        $q = $this->db->get($this->_table_name)->result_array();
-        print_r($q);
-        exit();
         if (!count($this->db->order_by($this->_order_by))) {
             $this->db->order_by($this->_order_by);
         }
-        return $this->db->get($this->_table_name)->$method();
+
+        $query = $this->db->get($this->_table_name)->$method();
+        return $query;
     }
 
     public function get_by($where, $single = FALSE) {
@@ -41,7 +38,6 @@ Class My_Model extends CI_Model {
     }
 
     public function save($data, $id = Null) {
-
         //set timestamps
         if ($this->_timestamps === TRUE) {
             $now = date('D-m-y H:i:s');
@@ -53,8 +49,11 @@ Class My_Model extends CI_Model {
         if ($id === Null) {
             !isset($data[$this->_primary_key]) || $data[$this->_primary_key] = Null;
             $this->db->set($data);
-            $this->db->insert($this->_table_name);
+            $this->db->insert($this->_table_name, $data);
             $lastinserted_id = $this->db->insert_id();
+//            print_r($this->db->error());
+            return ($this->db->affected_rows() != 1) ? false : true;
+
         }
         //update
         else {
@@ -64,6 +63,15 @@ Class My_Model extends CI_Model {
             $this->db->where($this->_primary_key, $id);
             $this->db->update($this->_table_name);
         }
+    }
+
+    public function array_from_post($fields) {
+        $data = array();
+        foreach ($fields as $field) {
+
+            $data[$field] = $this->input->post($field);
+        }
+        return $data;
     }
 
     public function delete($id) {

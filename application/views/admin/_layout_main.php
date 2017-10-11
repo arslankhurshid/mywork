@@ -7,8 +7,8 @@
             </div>
             <ul class="nav navbar-nav">
                 <li class="active"><a href="<?php echo base_url('/admin/dashboard'); ?>">Dashboard</a></li>
-                <li><?php echo anchor('admin/pages', 'pages'); ?></li>
-                <li><?php echo anchor('admin/users', 'users'); ?></li>
+                <li><?php echo anchor('admin/page', 'pages'); ?></li>
+                <li><?php echo anchor('admin/user', 'users'); ?></li>
             </ul>
         </div>
     </nav>
@@ -33,7 +33,10 @@
             <!--Side bar-->
             <div>
                 <section class="col-md-4">
-                    <?php echo mailto('m.arslan.khurshid@gmail.com', '<span class="glyphicon glyphicon-user"></span> m.arslan.khurshid@gmail.com'); ?> <br>
+                    <?php
+                    $email = $this->session->email;
+                    echo "<a href='mailto:" . $email ."'>" .'<span class="glyphicon glyphicon-user"></span>' .'&nbsp;'. $email;
+//                    echo mailto('".$email."', '<span class="glyphicon glyphicon-user"></span> $email'); ?> <br>
                     <?php echo anchor('admin/user/logout', '<span class="glyphicon glyphicon-off"></span> logout'); ?> <br>
                 </section>
             </div>

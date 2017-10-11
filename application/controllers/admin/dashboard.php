@@ -10,6 +10,7 @@ class dashboard extends Admin_Controller
     }
     function index()
     {
+        $this->data['subview'] = 'admin/dashboard/index';
         $this->load->view('admin/_layout_main.php', $this->data);
     }
     function modal()
