@@ -8,8 +8,7 @@ Class page extends Admin_Controller {
     }
 
     public function index() {
-        $this->data['pages'] = $this->page_m->get();
-
+        $this->data['pages'] = $this->page_m->get_with_parent();
         $this->data['subview'] = 'admin/pages/index';
         $this->load->view('admin/_layout_main', $this->data);
     }
@@ -23,11 +22,14 @@ Class page extends Admin_Controller {
         else {
             $this->data['page'] = $this->page_m->get_new();
         }
+        
+        // pages for drop down menu
+        $this->data['pages_without_parents'] = $this->page_m->get_no_parents(); 
 
         $rules = $this->page_m->rules;
         $this->form_validation->set_rules($rules);
         if ($this->form_validation->run() == TRUE) {
-            $data = $this->page_m->array_from_post(array('title', 'slug', 'body'));
+            $data = $this->page_m->array_from_post(array('title', 'slug', 'body', 'parent_id'));
             $this->page_m->save($data, $id);
             redirect('admin/page');
         }
@@ -55,6 +57,21 @@ Class page extends Admin_Controller {
                     
         }
         return TRUE;
+    }
+    
+    public function order()
+    {
+        $this->data['sortable'] = TRUE;
+        $this->data['subview'] =    'admin/pages/order';
+        $this->load->view('admin/_layout_main', $this->data);
+    }
+    
+    public function order_ajax()
+    {
+        $this->data['pages'] = $this->page_m->get_nested();
+        $this->load->view('admin/pages/order_ajax', $this->data);
+                
+                
     }
 
 }
