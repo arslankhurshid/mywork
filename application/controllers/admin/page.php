@@ -22,9 +22,9 @@ Class page extends Admin_Controller {
         else {
             $this->data['page'] = $this->page_m->get_new();
         }
-        
+
         // pages for drop down menu
-        $this->data['pages_without_parents'] = $this->page_m->get_no_parents(); 
+        $this->data['pages_without_parents'] = $this->page_m->get_no_parents();
 
         $rules = $this->page_m->rules;
         $this->form_validation->set_rules($rules);
@@ -36,42 +36,39 @@ Class page extends Admin_Controller {
         $this->data['subview'] = 'admin/pages/edit';
         $this->load->view('admin/_layout_main', $this->data);
     }
-    
-    public function delete($id)
-    {
+
+    public function delete($id) {
         $this->page_m->delete($id);
         redirect('admin/page');
     }
-    
-    public function _unique_slug()
-    {
+
+    public function _unique_slug() {
         $id = $this->uri->segment(4);
         $this->db->where('slug', $this->input->post('slug'));
-        
+
         !$id || $this->db->where('id !=', $id);
         $page = $this->page_m->get();
-        if(count($page))
-        {
+        if (count($page)) {
             $this->form_validation->set_message('_unique_slug', '%s should be unique');
             return FALSE;
-                    
         }
         return TRUE;
     }
-    
-    public function order()
-    {
+
+    public function order() {
         $this->data['sortable'] = TRUE;
-        $this->data['subview'] =    'admin/pages/order';
+        $this->data['subview'] = 'admin/pages/order';
         $this->load->view('admin/_layout_main', $this->data);
     }
-    
-    public function order_ajax()
-    {
+
+    public function order_ajax() {
+        // save order from ajax call
+        if (isset($_POST['sortable'])) {
+            $this->page_m->save_order($_POST['sortable']);
+        }
+
         $this->data['pages'] = $this->page_m->get_nested();
         $this->load->view('admin/pages/order_ajax', $this->data);
-                
-                
     }
 
 }
