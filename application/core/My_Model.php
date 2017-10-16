@@ -40,20 +40,22 @@ Class My_Model extends CI_Model {
     public function save($data, $id = Null) {
         //set timestamps
         if ($this->_timestamps === TRUE) {
-            $now = date('D-m-y H:i:s');
-            $id || $date['created'] = $now;
-            $data['modified'] = $now;
+            $now = date('Y-m-d H:i:s');
+            if ($id) {
+                $data['modified'] = $now;
+            } else {
+                $data['created'] = $now;
+                $data['modified'] = $now;
+            }
         }
-
         // insert
         if ($id === Null) {
             !isset($data[$this->_primary_key]) || $data[$this->_primary_key] = Null;
             $this->db->set($data);
             $this->db->insert($this->_table_name, $data);
             $lastinserted_id = $this->db->insert_id();
-//            print_r($this->db->error());
+            print_r($this->db->error());
             return ($this->db->affected_rows() != 1) ? false : true;
-
         }
         //update
         else {

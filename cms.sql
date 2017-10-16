@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Erstellungszeit: 13. Okt 2017 um 13:54
+-- Erstellungszeit: 16. Okt 2017 um 18:35
 -- Server-Version: 10.1.19-MariaDB
 -- PHP-Version: 5.6.28
 
@@ -19,6 +19,29 @@ SET time_zone = "+00:00";
 --
 -- Datenbank: `cms`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `articles`
+--
+
+CREATE TABLE `articles` (
+  `id` int(11) UNSIGNED NOT NULL,
+  `title` varchar(100) NOT NULL,
+  `slug` varchar(120) NOT NULL,
+  `pub_date` date NOT NULL,
+  `body` text NOT NULL,
+  `created` datetime NOT NULL,
+  `modified` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Daten für Tabelle `articles`
+--
+
+INSERT INTO `articles` (`id`, `title`, `slug`, `pub_date`, `body`, `created`, `modified`) VALUES
+(4, 'The website is live', 'The-website-is-live', '2017-10-20', '<p>&lt;p&gt;The website is live&lt;/p&gt;Yes!!!</p>', '2017-10-16 16:36:43', '2017-10-16 16:38:07');
 
 -- --------------------------------------------------------
 
@@ -71,9 +94,9 @@ CREATE TABLE `pages` (
 --
 
 INSERT INTO `pages` (`id`, `title`, `slug`, `order`, `body`, `parent_id`) VALUES
-(1, 'Homepage', 'home', '1', 'Home', 0),
-(3, 'Contact', 'contact', '2', '<p>&lt;p&gt;&amp;lt;p&amp;gt;contact&amp;lt;/p&amp;gt;&lt;/p&gt;</p>', 0),
-(4, 'About', 'about', '3', '<p>&lt;p&gt;ts&lt;/p&gt;</p>', 0);
+(1, 'Homepage', 'home', '3', 'Home', 0),
+(3, 'Contact', 'contact', '2', '<p>&lt;p&gt;&amp;lt;p&amp;gt;contact&amp;lt;/p&amp;gt;&lt;/p&gt;</p>', 4),
+(4, 'About', 'about', '1', '<p>&lt;p&gt;ts&lt;/p&gt;</p>', 0);
 
 -- --------------------------------------------------------
 
@@ -103,6 +126,12 @@ INSERT INTO `users` (`id`, `email`, `password`, `name`) VALUES
 --
 
 --
+-- Indizes für die Tabelle `articles`
+--
+ALTER TABLE `articles`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indizes für die Tabelle `ci_sessions`
 --
 ALTER TABLE `ci_sessions`
@@ -124,6 +153,11 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT für exportierte Tabellen
 --
 
+--
+-- AUTO_INCREMENT für Tabelle `articles`
+--
+ALTER TABLE `articles`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT für Tabelle `pages`
 --

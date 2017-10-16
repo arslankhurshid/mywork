@@ -5,11 +5,14 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <link rel="stylesheet" href="<?php echo site_url('public_html/css/datepicker.css')?>">
         <link rel="stylesheet" href="<?php echo site_url('public_html/css/admin.css')?>">
+        
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <script src="http://code.jquery.com/jquery-latest.js"></script>
+        <script src="<?php echo site_url('public_html/js/bootstrap-datepicker.js')?>"></script>
         <?php if (isset($sortable) && $sortable === TRUE): ?>
             <script type="text/javascript" src="<?php echo site_url('public_html/js/jquery-ui-1.9.2.custom.min.js'); ?>"></script>
             <script type="text/javascript" src="<?php echo site_url('public_html/js/jquery.mjs.nestedSortable.js'); ?>"></script>
