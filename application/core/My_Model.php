@@ -27,8 +27,16 @@ Class My_Model extends CI_Model {
         if (!count($this->db->order_by($this->_order_by))) {
             $this->db->order_by($this->_order_by);
         }
-
+//        $this->db->select('*');
+//        $this->db->from($this->_table_name);
+//        $this->db->get();
+        
+//        print_r($this->db->last_query());
+//        exit();
+//        $this->db->where('code', 'B');
+        
         $query = $this->db->get($this->_table_name)->$method();
+        
         return $query;
     }
 
