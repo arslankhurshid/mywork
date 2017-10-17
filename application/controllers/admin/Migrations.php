@@ -10,8 +10,10 @@ Class Migrations extends Admin_Controller {
 
     function index() 
     {
+//        echo "all is wel";
+//        exit();
         
-//        $migration = $this->migration->version(5);
+//        $migration = $this->migration->version();
 //        print_r($migration);
         if ($this->migration->current() === FALSE) 
         {

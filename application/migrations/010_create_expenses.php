@@ -2,7 +2,7 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Migration_create_articles extends CI_Migration {
+class Migration_create_expenses extends CI_Migration {
 
     public function up() {
         $this->dbforge->add_field(array(
@@ -16,14 +16,10 @@ class Migration_create_articles extends CI_Migration {
                 'type' => 'VARCHAR',
                 'constraint' => '100',
             ),
-            'slug' => array(
-                'type' => 'VARCHAR',
-                'constraint' => '120',
-            ),
-            'pub_date' => array(
+            'date' => array(
                 'type' => 'DATE',
             ),
-            'body' => array(
+            'amount' => array(
                 'type' => 'TEXT',
             ),
             'created' => array(
@@ -34,10 +30,11 @@ class Migration_create_articles extends CI_Migration {
             ),
         ));
         $this->dbforge->add_key('id', TRUE);
-        $this->dbforge->create_table('articles');
+        $this->dbforge->create_table('expenses');
     }
 
     public function down() {
-        $this->dbforge->drop_table('articles');
+        $this->dbforge->drop_table('expenses');
     }
+
 }
