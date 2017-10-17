@@ -17,7 +17,7 @@ Class My_Model extends CI_Model {
         if ($id != Null) {
             $filter = $this->_primary_filter;
             $id = $filter($id);
-            $this->db->where($this->_primary_key, $id);
+            $this->db->where($this->_table_name.'.'.$this->_primary_key, $id);
             $method = 'row';
         } elseif ($single == TRUE) {
             $method = 'row';
@@ -63,7 +63,7 @@ Class My_Model extends CI_Model {
             $this->db->insert($this->_table_name, $data);
             $lastinserted_id = $this->db->insert_id();
             print_r($this->db->error());
-            return ($this->db->affected_rows() != 1) ? false : true;
+            return $this->db->insert_id();
         }
         //update
         else {

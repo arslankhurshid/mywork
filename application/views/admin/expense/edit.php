@@ -3,8 +3,16 @@
 <?php echo form_open(); ?>
 <table class="table">
     <tr>
+        <?php
+        echo "<pre>";
+        print_r($subview_cat);
+        echo "</pre>";
+        ?>
         <td>Select Category:</td>
-        <td><?php echo form_dropdown('id', $categories, $this->input->post('id') ? $this->input->post('id') : $categories->id); ?></td>
+        <td><?php echo form_dropdown('cat_id', $categories, $this->input->post('category_id') ? $this->input->post('category_id') : $expense->category_id); ?></td>
+    </tr>
+     <tr>
+        <?php $this->load->view($subview_cat); // subview is set in Controller?>
     </tr>
     <tr>
         <td>Date:</td>
@@ -27,9 +35,9 @@
 <?php echo form_close(); ?>
 
 <script>
-$(function(){
-   
-   $('.datepicker').datepicker({format: 'yyyy-mm-dd'});
-    
-});
+    $(function () {
+
+        $('.datepicker').datepicker({format: 'yyyy-mm-dd'});
+
+    });
 </script>

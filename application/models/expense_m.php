@@ -1,11 +1,11 @@
 <?php
 
-class expense_m extends My_Model{
-    
+class expense_m extends My_Model {
+
     public function __construct() {
         parent::__construct();
     }
-    
+
     protected $_table_name = 'expenses';
     protected $_order_by = 'date desc, id desc';
     protected $_timestamps = TRUE;
@@ -26,24 +26,72 @@ class expense_m extends My_Model{
             'rules' => 'trim|required|max_length[100]|url_title|xss_clean'
         ),
     );
-    
-    public function get_with_categories($id = null, $single = null)
-    {
-        echo "all is well";
 
-        $this->db->select('expenses.*, expenses.id as expense_id, expenses.title as expense_title');
-        $this->db->join('expense_has_categories as c', 'expenses.id = c.id', 'left');
-        parent::get($id, $single);
-        
+    public function get_with_categories($id = null, $single = null) {
+        $this->db->select('expenses.*, expenses.id as expense_id, expenses.title as expense_title, t3.id as category_id, t3.title as category_title');
+        $this->db->join('expense_has_categories as t2', 'expenses.id = t2.expense_id', 'left');
+        $this->db->join('categories as t3', 't2.cat_id = t3.id', 'left');
+        return parent::get($id, $single);
     }
+
+    public function save_expense_to_cat($data, $id = Null) {
+        
+//        $data['expense_id'] = $this->db->insert_id();
+        $this->db->set($data);
+        $this->db->insert($this->_table_name, $data);
+//        $data['last_iserted_id'] = $this->db->insert_id();
+//        $data['cat_id'] = $this->db->insert_id();
+//        return $data;
+        
+
+        echo "<pre>";
+        print_r($data);
+        echo "</pre>";
+         $this->db->set($data);
+        $this->db->insert($this->_table_name, $data);
+        exit();
+
+        // new insert
+        if ($id === Null) {
+
+            $data['expense_id'] = $this->db->insert_id();
+            $data['cat_id'] = $this->db->insert_id();
+            echo "id = null";
+            print_r($data);
+            exit();
+            $this->db->insert('expense_has_categories', $data);
+            print_r($this->db->error());
+            return ($this->db->affected_rows() != 1) ? false : true;
+        }
+        //update
+        else {
+            $data['expense_id'] = $id;
+
+            $this->db->set($data);
+            $this->db->where('expense_id', $id);
+            $this->db->update('expense_has_categories');
+//            echo $this->db->last_query();
+        }
+    }
+
+    public function delete($id) {
+        //delete a expense
+        parent::delete($id);
+        //Reset expense_id for its category
+        $this->db->where('expense_id', $id); //which row want to upgrade  
+        $this->db->limit(1);
+        $this->db->delete('expense_has_categories');
+//        echo $this->db->last_query();
+    }
+
     public function get_new() {
         $expense = new stdClass();
         $expense->date = date('Y-m-d');
         $expense->title = '';
         $expense->amount = '';
-        
+        $expense->category_id = 0;
+
         return $expense;
     }
-    
-    
+
 }

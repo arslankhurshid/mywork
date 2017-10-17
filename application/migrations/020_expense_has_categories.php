@@ -21,8 +21,9 @@ class Migration_expense_has_categories extends CI_Migration {
 //                'default' => 0,
             ),
         ));
+        $this->dbforge->add_field($fields);
         $this->dbforge->add_key('id', TRUE);
-        $this->dbforge->add_column('expense_has_categories', $fields);
+        $this->dbforge->create_table('expense_has_categories');
     }
 
     public function down() {

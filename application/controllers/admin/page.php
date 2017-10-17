@@ -25,7 +25,7 @@ Class page extends Admin_Controller {
 
         // pages for drop down menu
         $this->data['pages_without_parents'] = $this->page_m->get_no_parents();
-
+   
         $rules = $this->page_m->rules;
         $this->form_validation->set_rules($rules);
         if ($this->form_validation->run() == TRUE) {
