@@ -1,5 +1,9 @@
 <h3><?php echo empty($article->id) ? 'Add a new article' : 'Edit Page:' . '&nbsp' . $article->title ?></h3>
-<?php echo validation_errors() ?>
+<?php if (!empty(validation_errors())): ?>
+    <div class="alert alert-danger" id="errordiv">
+        <?php echo validation_errors() ?>
+    </div>
+<?php endif; ?>
 <?php echo form_open(); ?>
 <table class="table">
 

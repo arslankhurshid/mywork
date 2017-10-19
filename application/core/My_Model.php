@@ -46,6 +46,7 @@ Class My_Model extends CI_Model {
     }
 
     public function save($data, $id = Null) {
+       
         //set timestamps
         if ($this->_timestamps === TRUE) {
             $now = date('Y-m-d H:i:s');
@@ -58,11 +59,12 @@ Class My_Model extends CI_Model {
         }
         // insert
         if ($id === Null) {
-            !isset($data[$this->_primary_key]) || $data[$this->_primary_key] = Null;
+//            !isset($data[$this->_primary_key]) || $data[$this->_primary_key] = Null;
             $this->db->set($data);
             $this->db->insert($this->_table_name, $data);
             $lastinserted_id = $this->db->insert_id();
             print_r($this->db->error());
+            echo $this->db->last_query();
             return $this->db->insert_id();
         }
         //update
@@ -72,6 +74,7 @@ Class My_Model extends CI_Model {
             $this->db->set($data);
             $this->db->where($this->_primary_key, $id);
             $this->db->update($this->_table_name);
+            echo $this->db->last_query();
         }
     }
 

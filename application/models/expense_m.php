@@ -34,46 +34,6 @@ class expense_m extends My_Model {
         return parent::get($id, $single);
     }
 
-    public function save_expense_to_cat($data, $id = Null) {
-        
-//        $data['expense_id'] = $this->db->insert_id();
-        $this->db->set($data);
-        $this->db->insert($this->_table_name, $data);
-//        $data['last_iserted_id'] = $this->db->insert_id();
-//        $data['cat_id'] = $this->db->insert_id();
-//        return $data;
-        
-
-        echo "<pre>";
-        print_r($data);
-        echo "</pre>";
-         $this->db->set($data);
-        $this->db->insert($this->_table_name, $data);
-        exit();
-
-        // new insert
-        if ($id === Null) {
-
-            $data['expense_id'] = $this->db->insert_id();
-            $data['cat_id'] = $this->db->insert_id();
-            echo "id = null";
-            print_r($data);
-            exit();
-            $this->db->insert('expense_has_categories', $data);
-            print_r($this->db->error());
-            return ($this->db->affected_rows() != 1) ? false : true;
-        }
-        //update
-        else {
-            $data['expense_id'] = $id;
-
-            $this->db->set($data);
-            $this->db->where('expense_id', $id);
-            $this->db->update('expense_has_categories');
-//            echo $this->db->last_query();
-        }
-    }
-
     public function delete($id) {
         //delete a expense
         parent::delete($id);

@@ -1,17 +1,18 @@
 <h3><?php echo empty($expense->id) ? 'Add a new expense' : 'Edit Page:' . '&nbsp' . $expense->title ?></h3>
-<?php echo validation_errors() ?>
+
+<?php if (!empty(validation_errors())): ?>
+    <div class="alert alert-danger" id="errordiv">
+        <?php echo validation_errors() ?>
+    </div>
+<?php endif; ?>
+
 <?php echo form_open(); ?>
 <table class="table">
     <tr>
-        <?php
-        echo "<pre>";
-        print_r($subview_cat);
-        echo "</pre>";
-        ?>
         <td>Select Category:</td>
-        <td><?php echo form_dropdown('cat_id', $categories, $this->input->post('category_id') ? $this->input->post('category_id') : $expense->category_id); ?></td>
+        <td><?php echo form_dropdown('cat_id', $categories, $this->input->post('category_id') ? $this->input->post('category_id') : $expense->category_id, 'class="target" id="my_id"'); ?></td>
     </tr>
-     <tr>
+    <tr id="subview_cat">
         <?php $this->load->view($subview_cat); // subview is set in Controller?>
     </tr>
     <tr>
@@ -39,5 +40,23 @@
 
         $('.datepicker').datepicker({format: 'yyyy-mm-dd'});
 
+    });
+
+            $(window).load(function () {/*code here*/
+
+        var drop_down = document.getElementById("my_id");
+        var hiddenDiv = document.getElementById("subview_cat");
+        drop_down.onchange = function () {
+            if (this.value == 0) {
+                hiddenDiv.style.display = "";
+            } else {
+                hiddenDiv.style.display = "none";
+            }
+        };
+        if (document.getElementById("my_id").value != 0) {
+            hiddenDiv.style.display = "none";
+        } else {
+            hiddenDiv.style.display = "";
+        }
     });
 </script>
