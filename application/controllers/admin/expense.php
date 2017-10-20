@@ -29,15 +29,11 @@ class expense extends Admin_Controller {
         }
         $this->data['categories'] = $this->categories_m->get_all_categories();
         $rules = $this->expense_m->rules;
-        $rules = array_merge($this->categories_m->rules, $rules);
-
         $this->form_validation->set_rules($rules);
 
         if ($this->form_validation->run() == TRUE) {
             // GET post data 
             // save new cat if posted
-            echo "all is well";
-            exit();
             if (isset($_POST) && $_POST['new_cat']) {
                 $array['cat_id'] = $this->categories_m->save_cat_return_id(array(
                     'title' => $this->input->post('new_cat'),
@@ -62,7 +58,7 @@ class expense extends Admin_Controller {
             redirect('admin/expense');
         }
         $this->data['subview'] = 'admin/expense/edit';
-        $this->data['subview_cat'] = 'admin/categories/index';
+        $this->data['subview_cat'] = 'admin/categories/cat';
         $this->load->view('admin/_layout_main', $this->data);
     }
 

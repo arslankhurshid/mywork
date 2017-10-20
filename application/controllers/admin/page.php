@@ -22,10 +22,11 @@ Class page extends Admin_Controller {
         else {
             $this->data['page'] = $this->page_m->get_new();
         }
-
         // pages for drop down menu
-        $this->data['pages_without_parents'] = $this->page_m->get_no_parents();
-   
+        $this->data['pages_without_parents'] = $this->page_m->get_no_parents($id);
+        echo "<pre>";
+        print_r($this->data['pages_without_parents']);
+        echo "</pre>";
         $rules = $this->page_m->rules;
         $this->form_validation->set_rules($rules);
         if ($this->form_validation->run() == TRUE) {

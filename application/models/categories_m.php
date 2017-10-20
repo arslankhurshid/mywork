@@ -10,10 +10,10 @@ class categories_m extends My_Model {
     protected $_order_by = '';
     protected $_timestamps = TRUE;
     public $rules = array(
-        'new_cat' => array(
-            'field' => 'new_cat',
+        'title' => array(
+            'field' => 'title',
             'label' => 'Category',
-            'rules' => 'trim|max_length[100]|callback__unique_cat|xss_clean'
+            'rules' => 'trim|required|max_length[100]|callback__unique_cat|xss_clean'
         ),
     );
 
@@ -40,6 +40,40 @@ class categories_m extends My_Model {
 //        echo $this->db->last_query();
         $lastID = $this->db->insert_id();
         return $lastID;
+    }
+
+    public function get_new() {
+        $category = new stdClass();
+        $category->title = '';
+        $category->parent_id = 0;
+        return $category;
+    }
+
+    public function get_with_parent($id = null, $single = null) {
+        $this->db->select('categories.*, c.title as parent_title');
+        $this->db->join('categories as c', 'categories.parent_id = c.id', 'left');
+//        echo $this->db->last_query();
+
+        return parent::get($id, $single);
+    }
+
+    public function get_no_parents() {
+        // Fetch all pages w/out parents
+        // Return key => value pair array
+        $this->db->select('id, title');
+        $this->db->where('parent_id', 0);
+        $categories = parent::get();
+
+
+
+        $array = array(0 => 'No parent');
+
+        if (count($categories)) {
+            foreach ($categories as $category) {
+                $array[$category->id] = $category->title;
+            }
+        }
+        return $array;
     }
 
 }

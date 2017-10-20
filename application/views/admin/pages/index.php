@@ -17,6 +17,9 @@
                 </thead>
                 <tbody>
                     <?php
+//                    echo "<pre>";
+//                    print_r($pages);
+//                    echo "</pre>";
                     if (count($pages)) :
                         foreach ($pages as $page):
                             ?>

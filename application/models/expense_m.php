@@ -25,6 +25,11 @@ class expense_m extends My_Model {
             'label' => 'Amount',
             'rules' => 'trim|required|max_length[100]|url_title|xss_clean'
         ),
+        'new_cat' => array(
+            'field' => 'new_cat',
+            'label' => 'New Category',
+            'rules' => 'trim|max_length[100]|callback__unique_cat|xss_clean'
+        ),
     );
 
     public function get_with_categories($id = null, $single = null) {

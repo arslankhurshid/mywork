@@ -56,21 +56,18 @@ Class page_m extends My_Model {
         foreach ($pages as $page) {
             if (!$page['parent_id']) {
                 $array[$page['id']] = $page;
-            } else{
+            } else {
                 $array[$page['parent_id']]['children'][] = $page;
             }
         }
         return $array;
     }
-    
-    public function save_order($pages)
-    {
-        if(count($pages)){
-            foreach($pages as $order=>$page)
-            {
-                if($page['item_id'] !=='')
-                {
-                    $data = array('parent_id' => (int) $page['parent_id'], 'order'=>$order);
+
+    public function save_order($pages) {
+        if (count($pages)) {
+            foreach ($pages as $order => $page) {
+                if ($page['item_id'] !== '') {
+                    $data = array('parent_id' => (int) $page['parent_id'], 'order' => $order);
                     $this->db->set($data)->where($this->_primary_key, $page['item_id'])->update($this->_table_name);
                 }
             }
@@ -85,20 +82,53 @@ Class page_m extends My_Model {
         return parent::get($id, $single);
     }
 
-    public function get_no_parents() {
+    public function get_no_parents($id = null) {
         // Fetch all pages w/out parents
         // Return key => value pair array
+//        echo "<pre>";
+//        print_r($parentID);
+//        echo "</pre>";
+
         $this->db->select('id, title');
         $this->db->where('parent_id', 0);
+        $this->db->where('id!=', $id);
+
         $pages = parent::get();
+        echo $this->db->last_query();
 
         $array = array(0 => 'No parent');
 
         if (count($pages)) {
             foreach ($pages as $page) {
                 $array[$page->id] = $page->title;
+                if ($id != null) {
+                    $parents = $this->get_with_parent();
+                    $parentID = array();
+                    foreach ($parents as $parent) {
+                        $parentID[$parent->parent_id] = $parent->parent_title;
+                        if ($parent->parent_id == $id) {
+                            unset($array[$page->id]);
+                        }
+                    }
+                }
             }
         }
+
+
+        return $array;
+    }
+
+    function updateArray($array, $findKey, $findValue) {
+
+        foreach ($array as $key => $value) {
+
+            if ($key == $findKey AND $value == $findValue) {
+                unset($array[$key]);
+                return $array;
+            }
+        }
+
+        $array[$findKey] = $findValue;
         return $array;
     }
 
