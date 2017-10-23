@@ -6,9 +6,9 @@
     </div>
 <?php endif; ?>
 <?php
-//echo "<pre>";
-//print_r($expense);
-//echo "</pre>";
+echo "<pre>";
+print_r($sub_categories);
+echo "</pre>";
 ?>
 
 <?php echo form_open(); ?>
@@ -19,7 +19,7 @@
     </tr>
     <tr>
         <td>Sub-Category:</td>
-        <td><?php echo form_dropdown('sub_cat_id', '', $this->input->post('sub_category_id') ? $this->input->post('sub_category_id') : $expense->sub_category_id, 'id="my_id2"'); ?></td>
+        <td><?php echo form_dropdown('sub_cat_id', $sub_categories, $this->input->post('sub_category_id') ? $this->input->post('sub_category_id') : $expense->sub_category_id, 'id=""'); ?></td>
     </tr>
     <tr id="subview_cat">
         <?php $this->load->view($subview_cat); // subview is set in Controller  ?>
@@ -61,24 +61,24 @@
         }
 
         /// change value of sub category based on parent category
-        var selected = document.getElementById('my_id').value;
-        console.info(selected);
-        var secondDropdown = '<?php // echo json_encode($slice);     ?>';
-        $.ajax({
-            url: 'updateDropdownField/' + selected,
-            dataType: "json",
-            success: function (data) {
-                console.info(data);
-                var $el = $("#my_id2");
-                $el.empty(); // remove old options
-                $.each(data, function (key, value) {
-                    $('#my_id2').append($('<option>').text(value).attr('value', key));
-
-                    console.log(key + ":" + value)
-                })
-            }
-
-        });
+//        var selected = document.getElementById('my_id').value;
+//        console.info(selected);
+//        var secondDropdown = '<?php // echo json_encode($slice);     ?>';
+//        $.ajax({
+//            url: 'updateDropdownField/' + selected,
+//            dataType: "json",
+//            success: function (data) {
+//                console.info(data);
+//                var $el = $("#my_id2");
+//                $el.empty(); // remove old options
+//                $.each(data, function (key, value) {
+//                    $('#my_id2').append($('<option>').text(value).attr('value', key));  
+//
+//                    console.log(key + ":" + value)
+//                })
+//            }
+//
+//        });
 
 
     };

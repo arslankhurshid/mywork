@@ -79,7 +79,7 @@ class categories_m extends My_Model {
         }
         return $array;
     }
-    
+
     public function get_sub_categories($id = null) {
         // Fetch all pages w/out parents
         // Return key => value pair array
@@ -100,7 +100,7 @@ class categories_m extends My_Model {
         }
         return $array;
     }
-    
+
     public function get_sub_categories_onChange($id = null) {
         // Fetch all pages w/out parents
         // Return key => value pair array
@@ -113,6 +113,20 @@ class categories_m extends My_Model {
 
 
 
+        $array = array(0 => 'No category');
+        if (count($categories)) {
+            foreach ($categories as $category) {
+                $array[$category->id] = $category->title;
+            }
+        }
+        return $array;
+    }
+
+    public function getSubCatArray($id) {
+        $this->db->select('id, title');
+        $this->db->where('parent_id=', $id);
+
+        $categories = parent::get();
         $array = array(0 => 'No category');
         if (count($categories)) {
             foreach ($categories as $category) {
