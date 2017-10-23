@@ -46,23 +46,27 @@ class categories_m extends My_Model {
         $category = new stdClass();
         $category->title = '';
         $category->parent_id = 0;
+        $category->sub_category_id = 0;
         return $category;
     }
 
     public function get_with_parent($id = null, $single = null) {
         $this->db->select('categories.*, c.title as parent_title');
         $this->db->join('categories as c', 'categories.parent_id = c.id', 'left');
-//        echo $this->db->last_query();
+        echo $this->db->last_query();
 
         return parent::get($id, $single);
     }
 
-    public function get_no_parents() {
+    public function get_no_parents($id = null) {
         // Fetch all pages w/out parents
         // Return key => value pair array
         $this->db->select('id, title');
         $this->db->where('parent_id', 0);
+        $this->db->where('id!=', $id);
+
         $categories = parent::get();
+//        echo $this->db->last_query();
 
 
 
@@ -74,6 +78,73 @@ class categories_m extends My_Model {
             }
         }
         return $array;
+    }
+    
+    public function get_sub_categories($id = null) {
+        // Fetch all pages w/out parents
+        // Return key => value pair array
+        $this->db->select('id, title');
+        $this->db->where('parent_id!=', 0);
+        $this->db->where('id!=', $id);
+
+        $categories = parent::get();
+//        echo $this->db->last_query();
+
+
+
+        $array = array(0 => 'No category');
+        if (count($categories)) {
+            foreach ($categories as $category) {
+                $array[$category->id] = $category->title;
+            }
+        }
+        return $array;
+    }
+    
+    public function get_sub_categories_onChange($id = null) {
+        // Fetch all pages w/out parents
+        // Return key => value pair array
+        $this->db->select('id, title');
+        $this->db->where('parent_id=', $id);
+//        $this->db->where('id!=', $id);
+
+        $categories = parent::get();
+//        echo $this->db->last_query();
+
+
+
+        $array = array(0 => 'No category');
+        if (count($categories)) {
+            foreach ($categories as $category) {
+                $array[$category->id] = $category->title;
+            }
+        }
+        return $array;
+    }
+
+    public function get_nested() {
+        $this->db->order_by("order", "asc");
+        $categories = $this->db->get('categories')->result_array();
+        $array = array();
+        foreach ($categories as $cat) {
+            if (!$cat['parent_id']) {
+                $array[$cat['id']] = $cat;
+            } else {
+                $array[$cat['parent_id']]['children'][] = $cat;
+            }
+        }
+        return $array;
+    }
+
+    public function save_order($categories) {
+        if (count($categories)) {
+            foreach ($categories as $order => $cat) {
+                if ($cat['item_id'] !== '') {
+                    $data = array('parent_id' => (int) $cat['parent_id'], 'order' => $order);
+                    $this->db->set($data)->where($this->_primary_key, $cat['item_id'])->update($this->_table_name);
+                }
+            }
+        }
     }
 
 }

@@ -27,7 +27,8 @@ class expense extends Admin_Controller {
         else {
             $this->data['expense'] = $this->expense_m->get_new();
         }
-        $this->data['categories'] = $this->categories_m->get_all_categories();
+        $this->data['categories'] = $this->categories_m->get_no_parents();
+        $this->data['sub_categories'] = $this->categories_m->get_sub_categories();
         $rules = $this->expense_m->rules;
         $this->form_validation->set_rules($rules);
 
@@ -52,6 +53,7 @@ class expense extends Admin_Controller {
             if ($array['expense_id'] == '') {
                 $array['expense_id'] = $id;
             }
+            $array['sub_cat_id'] = $this->input->post('sub_cat_id');
             // save cat to relational table
             $this->expense_has_cat_m->save($array, $id);
 
@@ -75,6 +77,12 @@ class expense extends Admin_Controller {
     public function delete($id) {
         $this->expense_m->delete($id);
         redirect('admin/expense');
+    }
+
+    public function updateDropDownField($value) {
+
+        $this->data['sub_categories'] = $this->categories_m->get_sub_categories_onChange($value);
+        echo json_encode($this->data['sub_categories']);
     }
 
 }

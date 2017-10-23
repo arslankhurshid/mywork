@@ -10,6 +10,9 @@ Class Categories extends Admin_Controller {
 
     function index() {
         $this->data['categories'] = $this->categories_m->get_with_parent();
+//        echo "<pre>";
+//        print_r($this->data['categories']);
+//        echo "</pre>";
         $this->data['subview'] = 'admin/categories/index';
         $this->load->view('admin/_layout_main', $this->data);
     }
@@ -28,13 +31,10 @@ Class Categories extends Admin_Controller {
             $this->data['category'] = $this->categories_m->get_new();
         }
 
-        // pages for drop down menu
-        $this->data['categories_without_parents'] = $this->categories_m->get_no_parents();
+        // categories for drop down menu
+        $this->data['categories_without_parents'] = $this->categories_m->get_no_parents($id);
 
         $rules = $this->categories_m->rules;
-        echo "<pre>";
-        print_r($rules);
-        echo "</pre>";
         $this->form_validation->set_rules($rules);
 
         if ($this->form_validation->run() == TRUE) {
@@ -62,6 +62,23 @@ Class Categories extends Admin_Controller {
             return FALSE;
         }
         return TRUE;
+    }
+    
+    public function order()
+    {
+         $this->data['sortable'] = TRUE;
+        $this->data['subview'] = 'admin/categories/order';
+        $this->load->view('admin/_layout_main', $this->data);
+    }
+    
+    public function order_ajax()
+    {
+         if (isset($_POST['sortable'])) {
+            $this->categories_m->save_order($_POST['sortable']);
+        }
+
+        $this->data['categories'] = $this->categories_m->get_nested();
+        $this->load->view('admin/categories/order_ajax', $this->data);
     }
 
 }

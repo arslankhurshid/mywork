@@ -12,6 +12,7 @@
                 <li><?php echo anchor('admin/user', 'users'); ?></li>
                 <li><?php echo anchor('admin/article', 'news articles'); ?></li>
                 <li><?php echo anchor('admin/categories', 'categories'); ?></li>
+                <li><?php echo anchor('admin/categories/order', 'order categories'); ?></li>
                 <li><?php echo anchor('admin/expense', 'expenses'); ?></li>
                 <li><?php echo anchor('admin/accounts', 'accounts'); ?></li>
             </ul>

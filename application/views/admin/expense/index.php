@@ -11,6 +11,7 @@
                 <td >Title</td>
                 <td >Date</td>
                 <td >Category</td>
+                <td >Sub-Category</td>
                 <td >Amount</td>
                 <td>Edit</td>
                 <td>Delete</td>
@@ -31,6 +32,7 @@
                         <td><?php echo anchor('admin/expense/edit/' . $expense->id, $expense->title); ?> </td>
                         <td><?php echo $expense->date; ?> </td>
                         <td><?php echo $expense->category_title; ?> </td>
+                        <td><?php echo $expense->sub_category; ?> </td>
                         <td><?php echo $expense->amount; ?> </td>
                         <td><?php echo btn_edit('admin/expense/edit/' . $expense->id) ?></td>
                         <td><?php echo btn_delete('admin/expense/delete/' . $expense->id) ?></td>

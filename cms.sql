@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Erstellungszeit: 19. Okt 2017 um 17:24
+-- Erstellungszeit: 23. Okt 2017 um 17:55
 -- Server-Version: 10.1.19-MariaDB
 -- PHP-Version: 5.6.28
 
@@ -77,19 +77,25 @@ CREATE TABLE `categories` (
   `id` int(11) NOT NULL,
   `title` varchar(100) NOT NULL,
   `created` datetime NOT NULL,
-  `modified` datetime NOT NULL
+  `order` int(11) DEFAULT NULL,
+  `modified` datetime NOT NULL,
+  `parent_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Daten für Tabelle `categories`
 --
 
-INSERT INTO `categories` (`id`, `title`, `created`, `modified`) VALUES
-(25, 'Tea Boy', '2017-10-19 11:15:35', '2017-10-19 11:15:35'),
-(26, 'newCAT', '2017-10-19 11:16:30', '2017-10-19 11:16:30'),
-(27, 'Bill', '2017-10-19 11:17:20', '2017-10-19 11:17:20'),
-(28, 'Home Expense', '2017-10-19 11:18:03', '2017-10-19 11:18:03'),
-(29, 'Online shopping', '2017-10-19 12:16:54', '2017-10-19 12:16:54');
+INSERT INTO `categories` (`id`, `title`, `created`, `order`, `modified`, `parent_id`) VALUES
+(25, 'Tea Boy', '2017-10-19 11:15:35', 0, '2017-10-23 11:28:12', 28),
+(26, 'newCAT', '2017-10-19 11:16:30', 3, '2017-10-19 11:16:30', 28),
+(27, 'Bill', '2017-10-19 11:17:20', 4, '2017-10-20 10:49:19', 28),
+(28, 'Home Expense', '2017-10-19 11:18:03', 1, '2017-10-23 08:56:55', 0),
+(29, 'Online shopping', '2017-10-19 12:16:54', 5, '2017-10-19 12:16:54', 0),
+(32, 'Food & Living', '2017-10-20 10:34:51', 2, '2017-10-20 10:44:48', 28),
+(33, 'Car', '2017-10-23 10:44:55', NULL, '2017-10-23 10:44:55', 0),
+(34, 'Parking Fee', '2017-10-23 10:45:21', NULL, '2017-10-23 11:28:18', 33),
+(35, 'Petrol', '2017-10-23 10:45:32', NULL, '2017-10-23 10:45:32', 33);
 
 -- --------------------------------------------------------
 
@@ -125,9 +131,13 @@ CREATE TABLE `expenses` (
 --
 
 INSERT INTO `expenses` (`id`, `title`, `date`, `amount`, `created`, `modified`) VALUES
-(32, 'Office expense', '2017-10-19', '236', '2017-10-19 11:15:35', '2017-10-19 11:16:48'),
+(32, 'Office expense', '2017-10-19', '236', '2017-10-19 11:15:35', '2017-10-20 10:40:30'),
 (33, 'Electricity Bill', '2017-10-19', '5000', '2017-10-19 11:17:20', '2017-10-19 11:18:28'),
-(34, 'Milk', '2017-10-19', '125', '2017-10-19 11:18:03', '2017-10-19 11:18:03');
+(34, 'Milk', '2017-10-19', '125', '2017-10-19 11:18:03', '2017-10-19 11:18:03'),
+(35, 'Road Tax', '2017-10-23', '125', '2017-10-23 11:37:26', '2017-10-23 11:37:26'),
+(36, 'Test Page', '2017-10-23', '22', '2017-10-23 13:41:16', '2017-10-23 13:41:16'),
+(37, 'Yearly MOT', '2017-10-23', '265', '2017-10-23 13:47:21', '2017-10-23 13:47:21'),
+(38, 'ABC Petrol Pump', '2017-10-23', '45', '2017-10-23 13:51:03', '2017-10-23 17:16:37');
 
 -- --------------------------------------------------------
 
@@ -138,17 +148,22 @@ INSERT INTO `expenses` (`id`, `title`, `date`, `amount`, `created`, `modified`) 
 CREATE TABLE `expense_has_categories` (
   `id` int(11) NOT NULL,
   `expense_id` int(11) NOT NULL,
-  `cat_id` int(11) NOT NULL
+  `cat_id` int(11) NOT NULL,
+  `sub_cat_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Daten für Tabelle `expense_has_categories`
 --
 
-INSERT INTO `expense_has_categories` (`id`, `expense_id`, `cat_id`) VALUES
-(2, 32, 25),
-(3, 33, 27),
-(4, 34, 28);
+INSERT INTO `expense_has_categories` (`id`, `expense_id`, `cat_id`, `sub_cat_id`) VALUES
+(2, 32, 25, 0),
+(3, 33, 27, 0),
+(4, 34, 28, 0),
+(5, 35, 33, 34),
+(6, 36, 0, 0),
+(7, 37, 33, 34),
+(8, 38, 33, 0);
 
 -- --------------------------------------------------------
 
@@ -187,9 +202,12 @@ CREATE TABLE `pages` (
 --
 
 INSERT INTO `pages` (`id`, `title`, `slug`, `order`, `body`, `parent_id`) VALUES
-(1, 'Homepage', 'home', '3', 'Home', 0),
-(3, 'Contact', 'contact', '2', '<p>&lt;p&gt;&amp;lt;p&amp;gt;contact&amp;lt;/p&amp;gt;&lt;/p&gt;</p>', 4),
-(4, 'About', 'about', '1', '<p>&lt;p&gt;ts&lt;/p&gt;</p>', 0);
+(1, 'Homepage', 'home', '6', '<p>&lt;p&gt;&amp;lt;p&amp;gt;&amp;amp;lt;p&amp;amp;gt;&amp;amp;amp;lt;p&amp;amp;amp;gt;&amp;amp;amp;amp;lt;p&amp;amp;amp;amp;gt;&amp;amp;amp;amp;amp;lt;p&amp;amp;amp;amp;amp;gt;Home&amp;amp;amp;amp;amp;lt;/p&amp;amp;amp;amp;amp;gt;&amp;amp;amp;amp;lt;/p&amp;amp;amp;amp;gt;&amp;amp;amp;lt;/p&amp;amp;amp;gt;&amp;amp;lt;/p&amp;amp;gt;&amp;lt;/p&amp;gt;&lt;/p&gt;</p>', 6),
+(3, 'Contact', 'contact', '2', '<p>&lt;p&gt;&amp;lt;p&amp;gt;contact&amp;lt;/p&amp;gt;&lt;/p&gt;</p>', 7),
+(4, 'About', 'about', '3', '<p>f</p>', 0),
+(5, 'Test Page', 'testpage', '4', '<p>&lt;p&gt;&amp;lt;p&amp;gt;tet&amp;lt;/p&amp;gt;&lt;/p&gt;</p>', 4),
+(6, 'OneMore', 'onemore', '5', '<p>&lt;p&gt;d&lt;/p&gt;</p>', 0),
+(7, 'TwoMore', 'twomore', '1', '<p>&lt;p&gt;&amp;lt;p&amp;gt;&amp;amp;lt;p&amp;amp;gt;5&amp;amp;lt;/p&amp;amp;gt;&amp;lt;/p&amp;gt;&lt;/p&gt;</p>', 0);
 
 -- --------------------------------------------------------
 
@@ -285,22 +303,22 @@ ALTER TABLE `articles`
 -- AUTO_INCREMENT für Tabelle `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 --
 -- AUTO_INCREMENT für Tabelle `expenses`
 --
 ALTER TABLE `expenses`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 --
 -- AUTO_INCREMENT für Tabelle `expense_has_categories`
 --
 ALTER TABLE `expense_has_categories`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 --
 -- AUTO_INCREMENT für Tabelle `pages`
 --
 ALTER TABLE `pages`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT für Tabelle `users`
 --

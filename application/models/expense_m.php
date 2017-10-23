@@ -33,9 +33,12 @@ class expense_m extends My_Model {
     );
 
     public function get_with_categories($id = null, $single = null) {
-        $this->db->select('expenses.*, expenses.id as expense_id, expenses.title as expense_title, t3.id as category_id, t3.title as category_title');
+        $this->db->select('expenses.*, expenses.id as expense_id, expenses.title as expense_title, t3.id as category_id, t3.title as category_title, t4.title as sub_category, t4.id as sub_category_id,');
         $this->db->join('expense_has_categories as t2', 'expenses.id = t2.expense_id', 'left');
         $this->db->join('categories as t3', 't2.cat_id = t3.id', 'left');
+        $this->db->join('categories as t4', 't2.sub_cat_id = t4.id', 'left');
+//        $catego = parent::get($id, $single);
+//        echo $this->db->last_query();
         return parent::get($id, $single);
     }
 
@@ -55,6 +58,7 @@ class expense_m extends My_Model {
         $expense->title = '';
         $expense->amount = '';
         $expense->category_id = 0;
+        $expense->sub_category_id = 0;
 
         return $expense;
     }

@@ -85,16 +85,12 @@ Class page_m extends My_Model {
     public function get_no_parents($id = null) {
         // Fetch all pages w/out parents
         // Return key => value pair array
-//        echo "<pre>";
-//        print_r($parentID);
-//        echo "</pre>";
-
         $this->db->select('id, title');
         $this->db->where('parent_id', 0);
         $this->db->where('id!=', $id);
 
         $pages = parent::get();
-        echo $this->db->last_query();
+//        echo $this->db->last_query();
 
         $array = array(0 => 'No parent');
 
