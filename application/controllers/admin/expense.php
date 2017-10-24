@@ -20,15 +20,23 @@ class expense extends Admin_Controller {
     public function edit($id = null) {
         $array = array();
         if ($id) {
+//            echo "edit module";
             $this->data['expense'] = $this->expense_m->get_with_categories($id);
+            print_r($this->data['expense']);
+
+            if ($this->data['expense']->sub_category_id !== '') {
+                $this->data['sub_categories'] = $this->categories_m->getSubCatArray($this->data['expense']->category_id);
+            }
+
             if (empty(count($this->data['expense'])))
                 $this->data['errors'][] = "expense could not be found";
         }
         else {
+            $this->data['categories'] = $this->categories_m->get_no_parents();
             $this->data['expense'] = $this->expense_m->get_new();
+            $this->data['sub_categories'] = $this->categories_m->get_sub_categories();
         }
-        $this->data['categories'] = $this->categories_m->get_no_parents();
-        $this->data['sub_categories'] = $this->categories_m->get_sub_categories();
+        
         $rules = $this->expense_m->rules;
         $this->form_validation->set_rules($rules);
 
@@ -83,6 +91,10 @@ class expense extends Admin_Controller {
 
         $this->data['sub_categories'] = $this->categories_m->get_sub_categories_onChange($value);
         echo json_encode($this->data['sub_categories']);
+    }
+
+    public function updateDropdownFieldTest() {
+        echo "all is well";
     }
 
 }
