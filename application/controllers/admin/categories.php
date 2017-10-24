@@ -38,10 +38,20 @@ Class Categories extends Admin_Controller {
         $this->form_validation->set_rules($rules);
 
         if ($this->form_validation->run() == TRUE) {
+            
+            if($_POST['parent_id'] !=0)
+            {
+                $this->categories_m->getOrder($_POST['parent_id']);
+            }
+            echo "<pre>";
+            print_r($_POST);
+            echo "</pre>";
+            exit();
             // INSERT THE CATEGORY
             $data = $this->categories_m->array_from_post(array(
                 'title',
                 'parent_id',
+                'order'
             ));
             $this->categories_m->save($data, $id);
             redirect('admin/categories');

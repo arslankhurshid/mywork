@@ -2,7 +2,7 @@
     <h3>
         Order Categories
     </h3>
-    <p class="alert alert-info">Drag to order pages and click 'Save'</p>
+    <p class="alert alert-info">Drag to order categories and click 'Save'</p>
     <div id="orderResult"></div>
     <input type="button" id="save" value="Save" class="btn btn-primary" />
 </section>

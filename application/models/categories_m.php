@@ -89,30 +89,6 @@ class categories_m extends My_Model {
 
         $categories = parent::get();
 //        echo $this->db->last_query();
-
-
-
-        $array = array(0 => 'No category');
-        if (count($categories)) {
-            foreach ($categories as $category) {
-                $array[$category->id] = $category->title;
-            }
-        }
-        return $array;
-    }
-
-    public function get_sub_categories_onChange($id = null) {
-        // Fetch all pages w/out parents
-        // Return key => value pair array
-        $this->db->select('id, title');
-        $this->db->where('parent_id=', $id);
-//        $this->db->where('id!=', $id);
-
-        $categories = parent::get();
-//        echo $this->db->last_query();
-
-
-
         $array = array(0 => 'No category');
         if (count($categories)) {
             foreach ($categories as $category) {
@@ -123,6 +99,7 @@ class categories_m extends My_Model {
     }
 
     public function getSubCatArray($id) {
+        // get sub cat in array for expense drop down
         $this->db->select('id, title');
         $this->db->where('parent_id=', $id);
 
@@ -139,6 +116,10 @@ class categories_m extends My_Model {
     public function get_nested() {
         $this->db->order_by("order", "asc");
         $categories = $this->db->get('categories')->result_array();
+        echo "<pre>";
+        print_r($categories);
+        echo "</pre>";
+        echo "------------------------------------";
         $array = array();
         foreach ($categories as $cat) {
             if (!$cat['parent_id']) {
@@ -147,6 +128,7 @@ class categories_m extends My_Model {
                 $array[$cat['parent_id']]['children'][] = $cat;
             }
         }
+        
         return $array;
     }
 
@@ -159,6 +141,20 @@ class categories_m extends My_Model {
                 }
             }
         }
+    }
+    
+    public function getOrder($parentID)
+    {
+        $this->db->select('id,order, title');
+        $this->db->where('parent_id=', $parentID);
+        $this->db->order_by("order", "asc");
+//        $this->db->where('id!=', $id);
+
+        $categories = parent::get();
+        echo "<pre>";
+        print_r($categories);
+        echo "</pre>";
+        
     }
 
 }
