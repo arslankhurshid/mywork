@@ -2,8 +2,10 @@
 <!--<div class="row col-md-8">-->
 <section>
     <h2>Accounts</h2>
-    <?php echo anchor('admin/accounts/edit', '<span class="glyphicon glyphicon-plus"> </span>Add an Expense'); ?>
-
+    <p style="text-align:left;">
+        <?php echo anchor('admin/accounts/edit', '<span class="glyphicon glyphicon-plus"> </span>Add an Account'); ?>
+        <span style="float:right;"><?php echo anchor('admin/accounts/transfer', '<span class="glyphicon glyphicon-plus"> </span>Transfer within Accounts'); ?></span>
+    </p>
 
     <table class="table table-striped" width="100%">
         <thead>

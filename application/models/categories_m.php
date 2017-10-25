@@ -116,10 +116,6 @@ class categories_m extends My_Model {
     public function get_nested() {
         $this->db->order_by("order", "asc");
         $categories = $this->db->get('categories')->result_array();
-        echo "<pre>";
-        print_r($categories);
-        echo "</pre>";
-        echo "------------------------------------";
         $array = array();
         foreach ($categories as $cat) {
             if (!$cat['parent_id']) {
@@ -128,7 +124,7 @@ class categories_m extends My_Model {
                 $array[$cat['parent_id']]['children'][] = $cat;
             }
         }
-        
+
         return $array;
     }
 
@@ -142,19 +138,17 @@ class categories_m extends My_Model {
             }
         }
     }
-    
-    public function getOrder($parentID)
-    {
+
+    public function getOrder($parentID) {
         $this->db->select('id,order, title');
         $this->db->where('parent_id=', $parentID);
         $this->db->order_by("order", "asc");
-//        $this->db->where('id!=', $id);
 
         $categories = parent::get();
-        echo "<pre>";
-        print_r($categories);
-        echo "</pre>";
-        
+        foreach ($categories as $cat) {
+            
+        }
+        return $cat->order;
     }
 
 }

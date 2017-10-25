@@ -1,7 +1,7 @@
 <?php
-echo "<pre>";
-print_r($categories);
-echo "</pre>";
+//echo "<pre>";
+//print_r($categories);
+//echo "</pre>";
 
 echo get_ol($categories);
 

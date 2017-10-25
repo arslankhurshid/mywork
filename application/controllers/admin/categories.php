@@ -38,25 +38,20 @@ Class Categories extends Admin_Controller {
         $this->form_validation->set_rules($rules);
 
         if ($this->form_validation->run() == TRUE) {
-            
-            if($_POST['parent_id'] !=0)
-            {
-                $this->categories_m->getOrder($_POST['parent_id']);
+            $orderArray = array();
+            if ($_POST['parent_id'] != 0) {
+                $lastOrder = $this->categories_m->getOrder($_POST['parent_id']);
+                $orderArray['order'] = $lastOrder + 1;
             }
-            echo "<pre>";
-            print_r($_POST);
-            echo "</pre>";
-            exit();
             // INSERT THE CATEGORY
             $data = $this->categories_m->array_from_post(array(
                 'title',
                 'parent_id',
-                'order'
             ));
+            $data = array_merge($orderArray, $data);
             $this->categories_m->save($data, $id);
             redirect('admin/categories');
         }
-
         $this->data['subview'] = 'admin/categories/edit';
         $this->load->view('admin/_layout_main', $this->data);
     }
@@ -73,22 +68,25 @@ Class Categories extends Admin_Controller {
         }
         return TRUE;
     }
-    
-    public function order()
-    {
-         $this->data['sortable'] = TRUE;
+
+    public function order() {
+        $this->data['sortable'] = TRUE;
         $this->data['subview'] = 'admin/categories/order';
         $this->load->view('admin/_layout_main', $this->data);
     }
-    
-    public function order_ajax()
-    {
-         if (isset($_POST['sortable'])) {
+
+    public function order_ajax() {
+        if (isset($_POST['sortable'])) {
             $this->categories_m->save_order($_POST['sortable']);
         }
 
         $this->data['categories'] = $this->categories_m->get_nested();
         $this->load->view('admin/categories/order_ajax', $this->data);
+    }
+
+    public function delete($id) {
+        $this->categories_m->delete($id);
+        redirect('admin/categories');
     }
 
 }

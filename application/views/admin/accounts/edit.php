@@ -1,4 +1,4 @@
-<h3><?php echo empty($account->id) ? 'Add a new account' : 'Edit Page:' . '&nbsp' . $account->title ?></h3>
+<h3><?php echo empty($account->id) ? 'Add a new account' : 'Edit Account:' . '&nbsp' . $account->title ?></h3>
 
 <?php if (!empty(validation_errors())): ?>
     <div class="alert alert-danger" id="errordiv">
