@@ -23,7 +23,7 @@ Class Transfer_m extends My_Model {
         'amount' => array(
             'field' => 'amount',
             'label' => 'Amount',
-            'rules' => 'trim|required|max_length[100]|xss_clean'
+            'rules' => 'trim|max_length[100]|callback__avaliable_amount|xss_clean'
         ),
         'reference' => array(
             'field' => 'reference',

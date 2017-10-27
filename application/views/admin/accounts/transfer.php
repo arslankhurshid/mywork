@@ -5,12 +5,6 @@
         <?php echo validation_errors() ?>
     </div>
 <?php endif; ?>
-<?php
-echo "<pre>";
-print_r($user_accounts);
-echo "</pre>";
-//exit();
-?>
 
 <?php echo form_open('', array('onsubmit' => 'return validate();'));?>
 
@@ -21,14 +15,14 @@ echo "</pre>";
     </tr>
     <tr>
         <td>To:</td>
-        <td><?php echo form_dropdown('to_bank', $user_accounts, $this->input->post('to_bank') ? $this->input->post('to_bank') : $account->to_bank, 'class="target" id="my_id"'); ?></td>
+        <td><?php echo form_dropdown('to_bank', $user_accounts, $this->input->post('to_bank') ? $this->input->post('to_bank') : $account->to_bank, 'class="target" id="my_id2"'); ?></td>
     </tr>
 <!--    <tr id="subview_cat">
     <?php // $this->load->view($subview_cat); // subview is set in Controller?>
     </tr>-->
     <tr>
         <td>Transfer Amount:</td>
-        <td><?php echo form_input('amount', set_value('title', $account->amount)); ?></td>
+        <td><?php echo form_input('amount', set_value('amount', $account->amount)); ?></td>
     </tr>
     <tr>
         <td>Reference:</td>
@@ -59,4 +53,21 @@ function validate()
     else
       return false;
 }
+
+ var drop_down = document.getElementById("my_id");
+    drop_down.onchange = function () {
+
+        $.post('<?php echo site_url('admin/accounts/updateDropDownField/'); ?>' + drop_down.value, function (data) {
+            
+//            console.info(data);
+            var $el = $("#my_id2");
+            $el.empty(); // remove old options
+            $.each(JSON.parse(data), function (key, value) {
+
+                $('#my_id2').append($('<option>').text(value).attr('value', key));
+
+//                console.log(key + ":" + value)
+            })
+        });
+    };
 </script>

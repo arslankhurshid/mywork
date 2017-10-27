@@ -9,7 +9,7 @@ Class accounts extends Admin_Controller {
     }
 
     public function index() {
-        $this->data['accounts'] = $this->accounts_m->get();
+        $this->data['accounts'] = $this->accounts_m->get_user_account();
         $this->data['subview'] = 'admin/accounts/index';
         $this->load->view('admin/_layout_main', $this->data);
     }
@@ -58,7 +58,6 @@ Class accounts extends Admin_Controller {
 
         if ($id) {
             $this->data['user_accounts'] = $this->accounts_m->getUserAccouts();
-            
         } else {
             $this->data['user_accounts'] = $this->accounts_m->getUserAccouts();
             $this->data['account'] = $this->transfer_m->get_new();
@@ -66,7 +65,6 @@ Class accounts extends Admin_Controller {
 
         $rules = $this->transfer_m->rules;
         $this->form_validation->set_rules($rules);
-
         if ($this->form_validation->run() == TRUE) {
             //insert
             $data = $this->transfer_m->array_from_post(array(
@@ -75,9 +73,22 @@ Class accounts extends Admin_Controller {
                 'amount',
                 'reference'
             ));
+            //save user transfer amount 
             $this->transfer_m->save($data, $id);
+            //update user account balance
+            $accounts = $this->accounts_m->get();
+            $sum = array();
+            foreach ($accounts as $account) {
+                if ($data['to_bank'] == $account->id) {
+                    $sum['balance'] = $data['amount'] + $account->balance;
+                    $this->accounts_m->save($sum, $account->id);
+                } elseif ($data['from_bank'] == $account->id) {
+                    $sum['balance'] = $account->balance - $data['amount'];
+                    $this->accounts_m->save($sum, $account->id);
+                }
+            }
+            redirect('admin/accounts');
         }
-
         $this->data['subview'] = 'admin/accounts/transfer';
         $this->load->view('admin/_layout_main', $this->data);
     }
@@ -96,6 +107,27 @@ Class accounts extends Admin_Controller {
             return FALSE;
         }
         return TRUE;
+    }
+
+    public function _avaliable_amount() {
+        if (isset($_POST) && $_POST['amount'] !== '') {
+            $accounts = $this->accounts_m->get();
+            foreach ($accounts as $account) {
+                if ($_POST['from_bank'] == $account->id) {
+                    if ($_POST['amount'] > $account->balance) {
+                        $this->form_validation->set_message('_avaliable_amount', 'The Transfer amount is greater than avaliable balance. Avaliable amount =' . $account->balance);
+                        return FALSE;
+                    } else {
+                        return TRUE;
+                    }
+                }
+            }
+        }
+    }
+
+    public function updateDropDownField($fromID) {
+        $accountArray = $this->accounts_m->getUserAccouts($fromID);
+        echo json_encode($accountArray);
     }
 
 }

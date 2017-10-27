@@ -41,20 +41,24 @@ Class Accounts_m extends My_Model {
         $accounts->account_id = '';
         return $accounts;
     }
-    
-    public function get($id = null, $sigle = FALSE)
-    {
+
+    public function get_user_account($id = null, $sigle = FALSE) {
         $this->db->where('user_id=', $this->session->id);
         return parent::get();
     }
-    
-    public function getUserAccouts()
-    {
-        $this->db->select('id, title, description');
-        $this->db->where('user_id=', $this->session->id);
 
+    public function getUserAccouts($id = null) {
+        $this->db->select('id, title, description');
+        if ($id) {
+            $this->db->where('id!=', $id);
+        } else {
+//              $this->db->select('id, title, description');
+            $this->db->where('user_id=', $this->session->id);
+        }
+//         $this->db->select('id, title, description');
+//            $this->db->where('user_id=', $this->session->id);
         $accounts = parent::get();
-        $array = array(0=>'Select Account');
+        $array = array(0 => 'Select Account');
         if (count($accounts)) {
             foreach ($accounts as $account) {
                 $array[$account->id] = $account->title;
