@@ -7,12 +7,16 @@
 <?php endif; ?>
 <?php
 //echo "<pre>";
-//print_r($sub_categories);
+//print_r($expense);
 //echo "</pre>";
 ?>
 
 <?php echo form_open(); ?>
 <table class="table">
+     <tr>
+        <td>Select Account:</td>
+        <td><?php echo form_dropdown('account_id', $accounts, $this->input->post('account_id') ? $this->input->post('account_id') : $expense->account_id, 'class="target" id="account"'); ?></td>
+    </tr>
     <tr>
         <td>Parent Category:</td>
         <td><?php echo form_dropdown('cat_id', $categories, $this->input->post('category_id') ? $this->input->post('category_id') : $expense->category_id, 'class="target" id="my_id"'); ?></td>

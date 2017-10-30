@@ -76,7 +76,7 @@ Class accounts extends Admin_Controller {
             //save user transfer amount 
             $this->transfer_m->save($data, $id);
             //update user account balance
-            $accounts = $this->accounts_m->get();
+            $accounts = $this->accounts_m->get_user_account();
             $sum = array();
             foreach ($accounts as $account) {
                 if ($data['to_bank'] == $account->id) {

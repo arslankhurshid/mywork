@@ -15,6 +15,7 @@
                 <li><?php echo anchor('admin/categories/order', 'order categories'); ?></li>
                 <li><?php echo anchor('admin/expense', 'expenses'); ?></li>
                 <li><?php echo anchor('admin/accounts', 'accounts'); ?></li>
+                <li><?php echo anchor('admin/reporting', 'report manager'); ?></li>
             </ul>
         </div>
     </nav>

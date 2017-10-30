@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Erstellungszeit: 25. Okt 2017 um 17:06
+-- Erstellungszeit: 30. Okt 2017 um 17:42
 -- Server-Version: 10.1.19-MariaDB
 -- PHP-Version: 5.6.28
 
@@ -42,8 +42,8 @@ CREATE TABLE `accounts` (
 --
 
 INSERT INTO `accounts` (`id`, `title`, `description`, `amount`, `balance`, `created`, `modified`, `user_id`) VALUES
-(3, 'Allied Bank Limited', 'Saving Account', 15000, 15000, '2017-10-25 11:43:03', '2017-10-25 11:43:03', 1),
-(4, 'Habib Bank ltd', 'Salary Account', 50000, 50000, '2017-10-25 11:43:44', '2017-10-25 11:43:44', 1);
+(3, 'Allied Bank Limited', 'Saving Account', 15000, 50, '2017-10-25 11:43:03', '2017-10-30 09:24:59', 1),
+(4, 'Habib Bank ltd', 'Salary Account', 50000, 100, '2017-10-25 11:43:44', '2017-10-30 09:04:39', 1);
 
 -- --------------------------------------------------------
 
@@ -127,22 +127,24 @@ CREATE TABLE `expenses` (
   `date` date NOT NULL,
   `amount` text NOT NULL,
   `created` datetime NOT NULL,
-  `modified` datetime NOT NULL
+  `modified` datetime NOT NULL,
+  `account_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Daten für Tabelle `expenses`
 --
 
-INSERT INTO `expenses` (`id`, `title`, `date`, `amount`, `created`, `modified`) VALUES
-(32, 'Office expense', '2017-10-19', '236', '2017-10-19 11:15:35', '2017-10-20 10:40:30'),
-(33, 'Electricity Bill', '2017-10-19', '5000', '2017-10-19 11:17:20', '2017-10-24 13:08:21'),
-(34, 'Milk', '2017-10-19', '125', '2017-10-19 11:18:03', '2017-10-19 11:18:03'),
-(35, 'Road Tax', '2017-10-23', '125', '2017-10-23 11:37:26', '2017-10-23 11:37:26'),
-(36, 'Test Page', '2017-10-23', '22', '2017-10-23 13:41:16', '2017-10-23 13:41:16'),
-(37, 'Yearly MOT', '2017-10-23', '265', '2017-10-23 13:47:21', '2017-10-24 16:36:23'),
-(38, 'ABC Petrol Pump', '2017-10-23', '45', '2017-10-23 13:51:03', '2017-10-23 17:16:37'),
-(39, 'Oct salary', '2017-10-24', '500', '2017-10-24 16:30:46', '2017-10-24 17:25:49');
+INSERT INTO `expenses` (`id`, `title`, `date`, `amount`, `created`, `modified`, `account_id`) VALUES
+(32, 'Office expense', '2017-10-19', '236', '2017-10-19 11:15:35', '2017-10-20 10:40:30', 0),
+(33, 'Electricity Bill', '2017-10-19', '5000', '2017-10-19 11:17:20', '2017-10-24 13:08:21', 0),
+(34, 'Milk', '2017-10-19', '125', '2017-10-19 11:18:03', '2017-10-19 11:18:03', 0),
+(35, 'Road Tax', '2017-09-23', '125', '2017-10-23 11:37:26', '2017-10-23 11:37:26', 0),
+(37, 'Yearly MOT', '2017-10-23', '265', '2017-10-23 13:47:21', '2017-10-24 16:36:23', 0),
+(38, 'ABC Petrol Pump', '2017-10-23', '45', '2017-10-23 13:51:03', '2017-10-27 11:52:59', 0),
+(39, 'Oct salary', '2017-10-24', '500', '2017-10-24 16:30:46', '2017-10-24 17:25:49', 0),
+(40, 'November', '2017-10-30', '300', '2017-10-30 08:36:15', '2017-10-30 08:36:15', 0),
+(43, '50', '2017-10-30', '50', '2017-10-30 09:24:59', '2017-10-30 09:24:59', 3);
 
 -- --------------------------------------------------------
 
@@ -166,10 +168,11 @@ INSERT INTO `expense_has_categories` (`id`, `expense_id`, `cat_id`, `sub_cat_id`
 (3, 33, 28, 0),
 (4, 34, 28, 0),
 (5, 35, 33, 34),
-(6, 36, 0, 0),
 (7, 37, 33, 36),
-(8, 38, 33, 0),
-(9, 39, 28, 25);
+(8, 38, 33, 35),
+(9, 39, 28, 25),
+(10, 40, 33, 35),
+(13, 43, 33, 35);
 
 -- --------------------------------------------------------
 
@@ -218,6 +221,32 @@ INSERT INTO `pages` (`id`, `title`, `slug`, `order`, `body`, `parent_id`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Tabellenstruktur für Tabelle `reports`
+--
+
+CREATE TABLE `reports` (
+  `id` int(11) NOT NULL,
+  `type` varchar(100) NOT NULL,
+  `period` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Daten für Tabelle `reports`
+--
+
+INSERT INTO `reports` (`id`, `type`, `period`) VALUES
+(1, 'Incoming', ''),
+(2, 'Outgoing', ''),
+(3, '', 'Current Month'),
+(4, '', 'Last Month'),
+(5, '', 'Last 6 Month'),
+(6, '', 'Last 12 Month'),
+(7, '', 'Current Year'),
+(8, '', 'Last Year');
+
+-- --------------------------------------------------------
+
+--
 -- Tabellenstruktur für Tabelle `users`
 --
 
@@ -260,7 +289,8 @@ CREATE TABLE `user_transfer_amount` (
 --
 
 INSERT INTO `user_transfer_amount` (`id`, `from_bank`, `to_bank`, `amount`, `reference`, `created`, `modified`) VALUES
-(1, 3, 4, 500, 'Frist', '2017-10-25 17:04:22', '2017-10-25 17:04:22');
+(32, 4, 3, 200, 'low balance', '2017-10-30 07:58:32', '2017-10-30 07:58:32'),
+(33, 4, 3, 50, '50', '2017-10-30 09:04:39', '2017-10-30 09:04:39');
 
 --
 -- Indizes der exportierten Tabellen
@@ -309,6 +339,12 @@ ALTER TABLE `pages`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indizes für die Tabelle `reports`
+--
+ALTER TABLE `reports`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indizes für die Tabelle `users`
 --
 ALTER TABLE `users`
@@ -338,22 +374,27 @@ ALTER TABLE `articles`
 -- AUTO_INCREMENT für Tabelle `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
 --
 -- AUTO_INCREMENT für Tabelle `expenses`
 --
 ALTER TABLE `expenses`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
 --
 -- AUTO_INCREMENT für Tabelle `expense_has_categories`
 --
 ALTER TABLE `expense_has_categories`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 --
 -- AUTO_INCREMENT für Tabelle `pages`
 --
 ALTER TABLE `pages`
   MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+--
+-- AUTO_INCREMENT für Tabelle `reports`
+--
+ALTER TABLE `reports`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 --
 -- AUTO_INCREMENT für Tabelle `users`
 --
@@ -363,7 +404,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT für Tabelle `user_transfer_amount`
 --
 ALTER TABLE `user_transfer_amount`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

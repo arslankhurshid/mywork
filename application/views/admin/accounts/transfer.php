@@ -5,7 +5,11 @@
         <?php echo validation_errors() ?>
     </div>
 <?php endif; ?>
-
+<?php 
+//echo "<pre>";
+//print_r($user_accounts);
+//echo "</pre>";
+?>
 <?php echo form_open('', array('onsubmit' => 'return validate();'));?>
 
 <table class="table">

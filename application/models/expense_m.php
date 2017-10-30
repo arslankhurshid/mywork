@@ -37,9 +37,11 @@ class expense_m extends My_Model {
         $this->db->join('expense_has_categories as t2', 'expenses.id = t2.expense_id', 'left');
         $this->db->join('categories as t3', 't2.cat_id = t3.id', 'left');
         $this->db->join('categories as t4', 't2.sub_cat_id = t4.id', 'left');
-//        $catego = parent::get($id, $single);
-//        echo $this->db->last_query();
-        return parent::get($id, $single);
+        $this->db->where('expenses.date >=', '2017-10-19');
+        $this->db->where('expenses.date <=', '2017-10-23');
+        $catego = parent::get($id, $single);
+        echo $this->db->last_query();
+//        return parent::get($id, $single);
     }
 
     public function delete($id) {
@@ -59,8 +61,37 @@ class expense_m extends My_Model {
         $expense->amount = '';
         $expense->category_id = 0;
         $expense->sub_category_id = 0;
+        $expense->account_id = 0;
 
         return $expense;
+    }
+
+    // function to be used in reports
+    public function get_current_month_data($id = null, $single = null) {
+        $now = date('Y-m-d');
+        $startOfMonth = date('Y-m-01');
+        $this->db->select('expenses.*, expenses.id as expense_id, expenses.title as expense_title, t3.id as category_id, t3.title as category_title, t4.title as sub_category, t4.id as sub_category_id,');
+        $this->db->join('expense_has_categories as t2', 'expenses.id = t2.expense_id', 'left');
+        $this->db->join('categories as t3', 't2.cat_id = t3.id', 'left');
+        $this->db->join('categories as t4', 't2.sub_cat_id = t4.id', 'left');
+        $this->db->where('expenses.date >=', $startOfMonth);
+        $this->db->where('expenses.date <=', $now);
+        $result = parent::get($id, $single);
+
+        $array = array();
+        foreach ($result as $res) {
+            echo "<pre>";
+            print_r($res);
+            echo "</pre>";
+            
+            
+        }
+        echo "<pre>";
+        print_r($array);
+        echo "</pre>";
+
+        echo $this->db->last_query();
+//        return parent::get($id, $single);
     }
 
 }

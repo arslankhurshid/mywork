@@ -7,6 +7,7 @@ class expense extends Admin_Controller {
         $this->load->model('expense_m');
         $this->load->model('categories_m');
         $this->load->model('expense_has_cat_m');
+        $this->load->model('accounts_m');
     }
 
     public function index() {
@@ -20,6 +21,7 @@ class expense extends Admin_Controller {
     public function edit($id = null) {
         $array = array();
         $this->data['categories'] = $this->categories_m->get_no_parents();
+        $this->data['accounts'] = $this->accounts_m->getUserAccouts();
         if ($id) {
             $this->data['expense'] = $this->expense_m->get_with_categories($id);
             if ($this->data['expense']->sub_category_id !== '') {
@@ -54,6 +56,7 @@ class expense extends Admin_Controller {
                 'date',
                 'title',
                 'amount',
+                'account_id'
             ));
             $array['expense_id'] = $this->expense_m->save($expense, $id);
             if ($array['expense_id'] == '') {
@@ -62,7 +65,15 @@ class expense extends Admin_Controller {
             $array['sub_cat_id'] = $this->input->post('sub_cat_id');
             // save cat to relational table
             $this->expense_has_cat_m->save($array, $id);
-
+            // update selected account 
+            $sum = array();
+            $accounts = $this->accounts_m->get_user_account();
+            foreach ($accounts as $account) {
+                if ($expense['account_id'] == $account->id) {
+                    $sum['balance'] = $account->balance - $expense['amount'];
+                    $this->accounts_m->save($sum, $account->id);
+                }
+            }
             redirect('admin/expense');
         }
         $this->data['subview'] = 'admin/expense/edit';
