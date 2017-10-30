@@ -9,6 +9,11 @@
 <!--<div class="row col-md-8">-->
 <section>
     <h2>Reporting</h2>
+    <?php
+//    echo "<pre>";
+//    print_r($defaultValues);
+//    echo "</pre>";
+    ?>
 
     <?php echo form_open('admin/reporting/search') . PHP_EOL; ?>
     <div class="well carousel-search hidden-sm">
@@ -39,7 +44,7 @@
             <ul class="dropdown-menu">
                 <?php foreach ($defaultValues as $dateValues): ?>
                     <?php if ($dateValues->period != ''): ?>
-                        <li value="<?php echo $dateValues->id; ?>"><a href="#"><?php echo $dateValues->period ?></a></li>
+                <li value="<?php echo $dateValues->id; ?>"><a href="<?php echo base_url('admin/reporting/selected_date/'. $dateValues->id)?>"><?php echo $dateValues->period ?></a></li>
                     <?php endif; ?>
                 <?php endforeach; ?>
 
@@ -95,37 +100,41 @@
         <thead>
             <tr>
                 <td >Categories</td>
-                <td >Amount</td>
-                <td >View Details</td>
+                <td >Total Amount</td>
+                <td >Currency</td>
 
             </tr>
         </thead>
         <tbody>
             <?php
-//            echo "<pre>";
-//            print_r($expenses);
-//            echo "</pre>";
-//            if (count($expenses)) :
-//                foreach ($expenses as $expense):
-            ?>
+//            exit();
+            if (count($expense_month)):
+                foreach ($expense_month as $key => $expense):
+                    ?>
+                    <?php
+                    foreach ($expense as $value => $val):
+//                        echo "<pre>";
+//                        print_r($value);
+//                        echo "</pre>";
+                        ?>
 
+                        <tr>
+                            <td><?php echo anchor('admin/reporting/view/' . $key, $value); ?> </td>
+                            <td><?php echo $val; ?> </td>
+                            <td><?php echo 'Euro' ?> </td>
+                            <td><?php // echo $expense->sub_category;                                                                     ?> </td>
+                            <td><?php // echo $expense->amount;                                                                     ?> </td>
+                            <td><?php // echo btn_edit('admin/expense/edit/' . $expense->id)                                                                     ?></td>
+                            <td><?php // echo btn_delete('admin/expense/delete/' . $expense->id)                                                                     ?></td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <tr>
+                    <td colspan="3"> We could not find any report.</td>
+                </tr>
 
-            <tr>
-                <td><?php // echo anchor('admin/expense/edit/' . $expense->id, $expense->title);                                                                 ?> </td>
-                <td><?php // echo $expense->date;                                                                 ?> </td>
-                <td><?php // echo $expense->category_title;                                                                 ?> </td>
-                <td><?php // echo $expense->sub_category;                                                                 ?> </td>
-                <td><?php // echo $expense->amount;                                                                 ?> </td>
-                <td><?php // echo btn_edit('admin/expense/edit/' . $expense->id)                                                                 ?></td>
-                <td><?php // echo btn_delete('admin/expense/delete/' . $expense->id)                                                                 ?></td>
-            </tr>
-            <?php // endforeach; ?>
-            <?php // else:   ?>
-            <tr>
-                <td colspan="3"> We could not find any report.</td>
-            </tr>
-
-            <?php // endif;   ?>
+            <?php endif; ?>
 
     </table>
 </section>
