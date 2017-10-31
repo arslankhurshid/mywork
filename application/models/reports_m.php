@@ -6,7 +6,7 @@ class reports_m extends My_Model {
         parent::__construct();
     }
 
-    protected $_table_name = 'expenses';
+    protected $_table_name = 'reports';
     protected $_order_by = '';
     protected $_timestamps = false;
     public $rules = array();
