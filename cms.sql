@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Erstellungszeit: 30. Okt 2017 um 17:42
+-- Erstellungszeit: 31. Okt 2017 um 16:43
 -- Server-Version: 10.1.19-MariaDB
 -- PHP-Version: 5.6.28
 
@@ -42,8 +42,8 @@ CREATE TABLE `accounts` (
 --
 
 INSERT INTO `accounts` (`id`, `title`, `description`, `amount`, `balance`, `created`, `modified`, `user_id`) VALUES
-(3, 'Allied Bank Limited', 'Saving Account', 15000, 50, '2017-10-25 11:43:03', '2017-10-30 09:24:59', 1),
-(4, 'Habib Bank ltd', 'Salary Account', 50000, 100, '2017-10-25 11:43:44', '2017-10-30 09:04:39', 1);
+(3, 'Allied Bank Limited', 'Saving Account', 15000, 340, '2017-10-25 11:43:03', '2017-10-31 13:04:36', 1),
+(4, 'Habib Bank ltd', 'Salary Account', 50000, 500, '2017-10-25 11:43:44', '2017-10-31 10:12:29', 1);
 
 -- --------------------------------------------------------
 
@@ -88,18 +88,11 @@ CREATE TABLE `categories` (
 --
 
 INSERT INTO `categories` (`id`, `title`, `created`, `order`, `modified`, `parent_id`) VALUES
-(25, 'TeaBoy', '2017-10-19 11:15:35', 11, '2017-10-24 16:57:33', 28),
-(26, 'newCAT', '2017-10-19 11:16:30', 10, '2017-10-19 11:16:30', 28),
-(27, 'Bill', '2017-10-19 11:17:20', 9, '2017-10-20 10:49:19', 28),
-(28, 'Home Expense', '2017-10-19 11:18:03', 7, '2017-10-23 08:56:55', 0),
-(29, 'Online shopping', '2017-10-19 12:16:54', 12, '2017-10-19 12:16:54', 28),
-(32, 'Food & Living', '2017-10-20 10:34:51', 8, '2017-10-20 10:44:48', 28),
-(33, 'Car', '2017-10-23 10:44:55', 1, '2017-10-23 10:44:55', 0),
-(34, 'Parking Fee', '2017-10-23 10:45:21', 2, '2017-10-23 11:28:18', 33),
-(35, 'Petrol', '2017-10-23 10:45:32', 3, '2017-10-23 10:45:32', 33),
-(36, 'Yearly Service', '2017-10-24 16:35:34', 0, '2017-10-24 16:36:05', 33),
-(44, 'Car Wash', '2017-10-25 10:55:16', 4, '2017-10-25 10:55:16', 33),
-(45, 'Office expense', '2017-10-25 10:56:57', 5, '2017-10-25 10:56:57', 0);
+(48, 'Car', '2017-10-31 13:02:07', 0, '2017-10-31 13:02:07', 0),
+(49, 'Petrol', '2017-10-31 13:02:14', 1, '2017-10-31 13:02:14', 48),
+(50, 'Bills', '2017-10-31 13:02:28', 0, '2017-10-31 13:02:28', 0),
+(51, 'Electricity Bill', '2017-10-31 13:02:35', 1, '2017-10-31 13:02:35', 50),
+(52, 'Water', '2017-10-31 13:02:47', 2, '2017-10-31 13:02:47', 50);
 
 -- --------------------------------------------------------
 
@@ -136,15 +129,10 @@ CREATE TABLE `expenses` (
 --
 
 INSERT INTO `expenses` (`id`, `title`, `date`, `amount`, `created`, `modified`, `account_id`) VALUES
-(32, 'Office expense', '2017-10-19', '236', '2017-10-19 11:15:35', '2017-10-20 10:40:30', 0),
-(33, 'Electricity Bill', '2017-10-19', '5000', '2017-10-19 11:17:20', '2017-10-24 13:08:21', 0),
-(34, 'Milk', '2017-10-19', '125', '2017-10-19 11:18:03', '2017-10-19 11:18:03', 0),
-(35, 'Road Tax', '2017-09-23', '125', '2017-10-23 11:37:26', '2017-10-23 11:37:26', 0),
-(37, 'Yearly MOT', '2017-10-23', '265', '2017-10-23 13:47:21', '2017-10-24 16:36:23', 0),
-(38, 'ABC Petrol Pump', '2017-10-23', '45', '2017-10-23 13:51:03', '2017-10-27 11:52:59', 0),
-(39, 'Oct salary', '2017-10-24', '500', '2017-10-24 16:30:46', '2017-10-24 17:25:49', 0),
-(40, 'November', '2017-10-30', '300', '2017-10-30 08:36:15', '2017-10-30 08:36:15', 0),
-(43, '50', '2017-10-30', '50', '2017-10-30 09:24:59', '2017-10-30 09:24:59', 3);
+(50, 'September Petrol', '2017-09-01', '50', '2017-10-31 13:03:37', '2017-10-31 13:03:37', 3),
+(51, 'October Petrol', '2017-10-31', '10', '2017-10-31 13:03:57', '2017-10-31 13:03:57', 3),
+(52, 'Sep bill', '2017-09-01', '50', '2017-10-31 13:04:22', '2017-10-31 13:04:22', 3),
+(53, 'Water October bill', '2017-10-31', '50', '2017-10-31 13:04:36', '2017-10-31 13:04:36', 3);
 
 -- --------------------------------------------------------
 
@@ -164,15 +152,10 @@ CREATE TABLE `expense_has_categories` (
 --
 
 INSERT INTO `expense_has_categories` (`id`, `expense_id`, `cat_id`, `sub_cat_id`) VALUES
-(2, 32, 25, 0),
-(3, 33, 28, 0),
-(4, 34, 28, 0),
-(5, 35, 33, 34),
-(7, 37, 33, 36),
-(8, 38, 33, 35),
-(9, 39, 28, 25),
-(10, 40, 33, 35),
-(13, 43, 33, 35);
+(20, 50, 48, 49),
+(21, 51, 48, 49),
+(22, 52, 50, 51),
+(23, 53, 50, 52);
 
 -- --------------------------------------------------------
 
@@ -374,17 +357,17 @@ ALTER TABLE `articles`
 -- AUTO_INCREMENT für Tabelle `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
 --
 -- AUTO_INCREMENT für Tabelle `expenses`
 --
 ALTER TABLE `expenses`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
 --
 -- AUTO_INCREMENT für Tabelle `expense_has_categories`
 --
 ALTER TABLE `expense_has_categories`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 --
 -- AUTO_INCREMENT für Tabelle `pages`
 --

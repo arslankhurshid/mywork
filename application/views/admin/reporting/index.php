@@ -15,7 +15,7 @@
 //    echo "</pre>";
     ?>
 
-    <?php echo form_open('admin/reporting/search') . PHP_EOL; ?>
+    <?php echo form_open('admin/reporting/index') . PHP_EOL; ?>
     <div class="well carousel-search hidden-sm">
         <div class="btn-group"> <a class="btn btn-default dropdown-toggle btn-select" data-toggle="dropdown" href="">Select Type <span class="caret"></span></a>
 
@@ -31,7 +31,13 @@
 
             <ul class="dropdown-menu">
                 <?php foreach ($accounts as $account): ?>
-                    <li value="<?php echo $account->id ?>"><a href="#"><?php echo $account->title; ?></a></li>
+                    <li value="<?php echo $account->id ?>"><a href="<?php
+                        if ($_SERVER['QUERY_STRING'] != '') {
+                            echo base_url('admin/reporting/index?' . $_SERVER['QUERY_STRING'] . '&account=' . $account->id);
+                        } else {
+                            echo base_url('admin/reporting/index?account=' . $account->id);
+                        }
+                        ?>"><?php echo $account->title; ?></a></li>
 
                 <?php endforeach; ?>
                 <li class="divider"></li>
@@ -40,13 +46,18 @@
             </ul>
         </div>
         <div class="btn-group"> <a class="btn btn-default dropdown-toggle btn-select" data-toggle="dropdown" href="#">Date<span class="caret"></span></a>
-
             <ul class="dropdown-menu">
                 <?php foreach ($defaultValues as $dateValues): ?>
                     <?php if ($dateValues->period != ''): ?>
-                <li value="<?php echo $dateValues->id; ?>"><a href="<?php echo base_url('admin/reporting/selected_date/'. $dateValues->id)?>"><?php echo $dateValues->period ?></a></li>
-                    <?php endif; ?>
-                <?php endforeach; ?>
+                        <li value="<?php echo $dateValues->id; ?>"><a href="<?php
+                            if ($_SERVER['QUERY_STRING'] != '') {
+                                echo base_url('admin/reporting/index?' . $_SERVER['QUERY_STRING'] . '&date=' . $dateValues->id);
+                            } else {
+                                echo base_url('admin/reporting/index?date=' . $dateValues->id);
+                            }
+                            ?>"><?php echo $dateValues->period ?></a></li>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
 
                 <li class="divider"></li>
                 <table>
@@ -119,13 +130,20 @@
                         ?>
 
                         <tr>
-                            <td><?php echo anchor('admin/reporting/view/' . $key, $value); ?> </td>
+                            <td><?php
+                                if ($_SERVER['QUERY_STRING'] != '') {
+                                    echo anchor('admin/reporting/view?cat_id=' . $key . '&' . $_SERVER['QUERY_STRING'], $value);
+//                                    echo base_url('admin/reporting/index?' . $_SERVER['QUERY_STRING'] . '&account=' . $account->id);
+                                } else {
+                                    echo anchor('admin/reporting/view?cat_id=' . $key, $value);
+                                }
+                                ?> </td>
                             <td><?php echo $val; ?> </td>
                             <td><?php echo 'Euro' ?> </td>
-                            <td><?php // echo $expense->sub_category;                                                                     ?> </td>
-                            <td><?php // echo $expense->amount;                                                                     ?> </td>
-                            <td><?php // echo btn_edit('admin/expense/edit/' . $expense->id)                                                                     ?></td>
-                            <td><?php // echo btn_delete('admin/expense/delete/' . $expense->id)                                                                     ?></td>
+                            <td><?php // echo $expense->sub_category;                                                                            ?> </td>
+                            <td><?php // echo $expense->amount;                                                                            ?> </td>
+                            <td><?php // echo btn_edit('admin/expense/edit/' . $expense->id)                                                                           ?></td>
+                            <td><?php // echo btn_delete('admin/expense/delete/' . $expense->id)                                                                           ?></td>
                         </tr>
                     <?php endforeach; ?>
                 <?php endforeach; ?>

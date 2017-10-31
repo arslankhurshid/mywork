@@ -9,11 +9,15 @@ class Reporting extends Admin_Controller {
         $this->load->model('expense_m');
     }
 
-    public function index() {
+    public function index($id = null, $accID = null) {
+//        print_r($_REQUEST);
+        if (isset($_REQUEST) && !empty($_REQUEST['account']))
+            $accID = $_REQUEST['account'];
+        if (isset($_REQUEST) && !empty($_REQUEST['date']))
+            $id = $_REQUEST['date'];
         //load the current month data
-        $this->data['expense_month'] = $this->expense_m->get_current_month_data();
+        $this->data['expense_month'] = $this->expense_m->get_current_month_data($id, $accID);
 
-//        exit();
         $this->data['report'] = $this->reports_m->get_new();
         $this->data['accounts'] = $this->accounts_m->get_user_account();
         $this->data['getDefaulValues'] = $this->reports_m->getDefaulValues();
@@ -22,39 +26,17 @@ class Reporting extends Admin_Controller {
         $this->load->view('admin/_layout_main', $this->data);
     }
 
-    public function selected_date($id) {
-        $dateVal = array(
-            '3' => 'Current Month',
-            '4' => 'Last Month',
-            '5' => 'Last 6 Month',
-            '6' => 'Last 12 Month',
-            '7' => 'Current Year',
-            '8' => 'Last Year',
-        );
-        $dateVal = array_flip($dateVal);
-//        echo "<pre>";
-////        print_r(array_flip($dateVal);
-//        echo "</pre>";
-        if (in_array($id, $dateVal)) {
-            echo "all is well";
-            $this->data['expense_month']= $this->expense_m->get_current_month_data($id);
-            $this->data['report'] = $this->reports_m->get_new();
-            $this->data['accounts'] = $this->accounts_m->get_user_account();
-            $this->data['getDefaulValues'] = $this->reports_m->getDefaulValues();
-            $this->data['defaultValues'] = $this->reports_m->get();
-            $this->data['subview'] = 'admin/reporting/index';
-            $this->load->view('admin/_layout_main', $this->data);
-        }
-    }
+    public function view($cat_id = null, $date_id = null, $accID = null) {
 
-    public function search() {
+        if (isset($_REQUEST) && !empty($_REQUEST['cat_id']))
+            $cat_id = $_REQUEST['cat_id'];
+        if (isset($_REQUEST) && !empty($_REQUEST['date']))
+            $date_id = $_REQUEST['date'];
+        if (isset($_REQUEST) && !empty($_REQUEST['date']))
+            $date_id = $_REQUEST['date'];
 
-        echo "<pre>";
-        print_r($_POST);
-        echo "</pre>";
-        exit();
-
-        $this->data['subview'] = 'admin/reporting/index';
+        $this->data['expenses'] = $this->expense_m->expenseDetailView($cat_id, $date_id, $accID);
+        $this->data['subview'] = 'admin/reporting/view';
         $this->load->view('admin/_layout_main', $this->data);
     }
 

@@ -58,7 +58,7 @@ date_default_timezone_get('Europe/Austria');
         $root = dirname(__FILE__);
         switch ($root)
         {
-        case 'D:\xampp\htdocs\tasker':
+        case 'C:\xampp\htdocs\tasker':
             define('ENVIRONMENT', 'development');
             break;
         default :
