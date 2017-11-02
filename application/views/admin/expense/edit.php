@@ -15,15 +15,15 @@
 <table class="table">
      <tr>
         <td>Select Account:</td>
-        <td><?php echo form_dropdown('account_id', $accounts, $this->input->post('account_id') ? $this->input->post('account_id') : $expense->account_id, 'class="target" id="account"'); ?></td>
+        <td><?php echo form_dropdown('account_id', $accounts, $this->input->post('account_id') ? $this->input->post('account_id') : $expense->account_id, 'class="btn btn-default dropdown-toggle btn-select2" id="account"'); ?></td>
     </tr>
     <tr>
         <td>Parent Category:</td>
-        <td><?php echo form_dropdown('cat_id', $categories, $this->input->post('category_id') ? $this->input->post('category_id') : $expense->category_id, 'class="target" id="my_id"'); ?></td>
+        <td><?php echo form_dropdown('cat_id', $categories, $this->input->post('category_id') ? $this->input->post('category_id') : $expense->category_id, 'class="btn btn-default dropdown-toggle btn-select2" id="my_id"'); ?></td>
     </tr>
     <tr>
         <td>Sub-Category:</td>
-        <td><?php echo form_dropdown('sub_cat_id', $sub_categories, $this->input->post('sub_category_id') ? $this->input->post('sub_category_id') : $expense->sub_category_id, 'id="my_id2"'); ?></td>
+        <td><?php echo form_dropdown('sub_cat_id', $sub_categories, $this->input->post('sub_category_id') ? $this->input->post('sub_category_id') : $expense->sub_category_id, 'class="btn btn-default dropdown-toggle btn-select2" id="my_id2"'); ?></td>
     </tr>
     <tr id="subview_cat">
         <?php $this->load->view($subview_cat); // subview is set in Controller  ?>

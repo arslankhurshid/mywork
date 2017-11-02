@@ -39,5 +39,16 @@ class reports_m extends My_Model {
         echo $this->db->last_query();
 //        return parent::get($id, $single);
     }
+    
+    public function get_user_dates()
+    {
+        $dates = parent::get();
+        $array = array();
+        foreach($dates as $date)
+        {
+            $array[$date->id] = $date->period;
+        }
+        return $array;
+    }
 
 }

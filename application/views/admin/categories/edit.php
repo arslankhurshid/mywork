@@ -8,7 +8,7 @@
 <table class="table">
     <tr>
         <td>Parent:</td>
-        <td><?php echo form_dropdown('parent_id', $categories_without_parents, $this->input->post('parent_id') ? $this->input->post('parent_id') : $category->parent_id); ?></td>
+        <td><?php echo form_dropdown('parent_id', $categories_without_parents, $this->input->post('parent_id') ? $this->input->post('parent_id') : $category->parent_id, 'class="btn btn-default dropdown-toggle btn-select2"'); ?></td>
     </tr>
     <tr>
         <td>Title:</td>

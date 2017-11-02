@@ -15,11 +15,11 @@
 <table class="table">
     <tr>
         <td>From:</td>
-        <td><?php echo form_dropdown('from_bank', $user_accounts, $this->input->post('from_bank') ? $this->input->post('from_bank') : $account->from_bank, 'class="target" id="my_id"'); ?></td>
+        <td><?php echo form_dropdown('from_bank', $user_accounts, $this->input->post('from_bank') ? $this->input->post('from_bank') : $account->from_bank, 'class="btn btn-default dropdown-toggle btn-select2" id="my_id"'); ?></td>
     </tr>
     <tr>
         <td>To:</td>
-        <td><?php echo form_dropdown('to_bank', $user_accounts, $this->input->post('to_bank') ? $this->input->post('to_bank') : $account->to_bank, 'class="target" id="my_id2"'); ?></td>
+        <td><?php echo form_dropdown('to_bank', $user_accounts, $this->input->post('to_bank') ? $this->input->post('to_bank') : $account->to_bank, 'class="btn btn-default dropdown-toggle btn-select2" id="my_id2"'); ?></td>
     </tr>
 <!--    <tr id="subview_cat">
     <?php // $this->load->view($subview_cat); // subview is set in Controller?>

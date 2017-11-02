@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Erstellungszeit: 31. Okt 2017 um 16:43
+-- Erstellungszeit: 02. Nov 2017 um 16:58
 -- Server-Version: 10.1.19-MariaDB
 -- PHP-Version: 5.6.28
 
@@ -42,7 +42,7 @@ CREATE TABLE `accounts` (
 --
 
 INSERT INTO `accounts` (`id`, `title`, `description`, `amount`, `balance`, `created`, `modified`, `user_id`) VALUES
-(3, 'Allied Bank Limited', 'Saving Account', 15000, 340, '2017-10-25 11:43:03', '2017-10-31 13:04:36', 1),
+(3, 'Allied Bank Limited', 'Saving Account', 15000, 292, '2017-10-25 11:43:03', '2017-11-02 16:34:26', 1),
 (4, 'Habib Bank ltd', 'Salary Account', 50000, 500, '2017-10-25 11:43:44', '2017-10-31 10:12:29', 1);
 
 -- --------------------------------------------------------
@@ -92,7 +92,8 @@ INSERT INTO `categories` (`id`, `title`, `created`, `order`, `modified`, `parent
 (49, 'Petrol', '2017-10-31 13:02:14', 1, '2017-10-31 13:02:14', 48),
 (50, 'Bills', '2017-10-31 13:02:28', 0, '2017-10-31 13:02:28', 0),
 (51, 'Electricity Bill', '2017-10-31 13:02:35', 1, '2017-10-31 13:02:35', 50),
-(52, 'Water', '2017-10-31 13:02:47', 2, '2017-10-31 13:02:47', 50);
+(52, 'Water', '2017-10-31 13:02:47', 2, '2017-10-31 13:02:47', 50),
+(53, 'Parking', '2017-11-02 08:53:51', 2, '2017-11-02 08:53:51', 48);
 
 -- --------------------------------------------------------
 
@@ -132,7 +133,12 @@ INSERT INTO `expenses` (`id`, `title`, `date`, `amount`, `created`, `modified`, 
 (50, 'September Petrol', '2017-09-01', '50', '2017-10-31 13:03:37', '2017-10-31 13:03:37', 3),
 (51, 'October Petrol', '2017-10-31', '10', '2017-10-31 13:03:57', '2017-10-31 13:03:57', 3),
 (52, 'Sep bill', '2017-09-01', '50', '2017-10-31 13:04:22', '2017-10-31 13:04:22', 3),
-(53, 'Water October bill', '2017-10-31', '50', '2017-10-31 13:04:36', '2017-10-31 13:04:36', 3);
+(53, 'Water October bill', '2017-10-31', '50', '2017-10-31 13:04:36', '2017-10-31 13:04:36', 3),
+(54, 'Jakomini Car Parking Ticket', '2017-10-25', '5', '2017-11-02 08:54:32', '2017-11-02 08:54:32', 3),
+(55, 'Siesberg Car Parking Ticket', '2017-10-12', '3', '2017-11-02 08:55:54', '2017-11-02 08:55:54', 3),
+(56, 'November bill', '2017-11-02', '20', '2017-11-02 16:03:38', '2017-11-02 16:03:38', 3),
+(57, 'Water November Bill', '2017-11-02', '10', '2017-11-02 16:06:31', '2017-11-02 16:06:31', 3),
+(58, 'Petrol November', '2017-11-02', '10', '2017-11-02 16:34:26', '2017-11-02 16:34:26', 3);
 
 -- --------------------------------------------------------
 
@@ -155,7 +161,12 @@ INSERT INTO `expense_has_categories` (`id`, `expense_id`, `cat_id`, `sub_cat_id`
 (20, 50, 48, 49),
 (21, 51, 48, 49),
 (22, 52, 50, 51),
-(23, 53, 50, 52);
+(23, 53, 50, 52),
+(24, 54, 48, 53),
+(25, 55, 48, 53),
+(26, 56, 50, 51),
+(27, 57, 50, 52),
+(28, 58, 48, 49);
 
 -- --------------------------------------------------------
 
@@ -209,7 +220,6 @@ INSERT INTO `pages` (`id`, `title`, `slug`, `order`, `body`, `parent_id`) VALUES
 
 CREATE TABLE `reports` (
   `id` int(11) NOT NULL,
-  `type` varchar(100) NOT NULL,
   `period` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -217,15 +227,13 @@ CREATE TABLE `reports` (
 -- Daten für Tabelle `reports`
 --
 
-INSERT INTO `reports` (`id`, `type`, `period`) VALUES
-(1, 'Incoming', ''),
-(2, 'Outgoing', ''),
-(3, '', 'Current Month'),
-(4, '', 'Last Month'),
-(5, '', 'Last 6 Month'),
-(6, '', 'Last 12 Month'),
-(7, '', 'Current Year'),
-(8, '', 'Last Year');
+INSERT INTO `reports` (`id`, `period`) VALUES
+(3, 'Current Month'),
+(4, 'Last Month'),
+(5, 'Last 6 Month'),
+(6, 'Last 12 Month'),
+(7, 'Current Year'),
+(8, 'Last Year');
 
 -- --------------------------------------------------------
 
@@ -357,17 +365,17 @@ ALTER TABLE `articles`
 -- AUTO_INCREMENT für Tabelle `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
 --
 -- AUTO_INCREMENT für Tabelle `expenses`
 --
 ALTER TABLE `expenses`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
 --
 -- AUTO_INCREMENT für Tabelle `expense_has_categories`
 --
 ALTER TABLE `expense_has_categories`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 --
 -- AUTO_INCREMENT für Tabelle `pages`
 --

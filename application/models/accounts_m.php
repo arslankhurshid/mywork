@@ -42,6 +42,17 @@ Class Accounts_m extends My_Model {
         return $accounts;
     }
 
+    public function user_account() {
+        $this->db->where('user_id=', $this->session->id);
+        $result = parent::get();
+        $array = array();
+        foreach ($result as $res) {
+
+            $array[$res->id] = $res->title;
+        }
+        return $array;
+    }
+
     public function get_user_account($id = null, $sigle = FALSE) {
         $this->db->where('user_id=', $this->session->id);
         return parent::get();

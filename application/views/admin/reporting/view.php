@@ -1,10 +1,43 @@
 <?php ?>
+<h2>Sub-Categories</h2>
+<section>
+    <table class="table table-striped" width="100%">
+        <thead>
+            <tr>
+                <td >Sub-Category</td>
+                <td >Total Amount</td>
+                <td >Currency</td>
+
+            </tr>
+        </thead>
+        <tbody>
+            <?php
+            if (count($sub_expenses)):
+                foreach ($sub_expenses as $key => $expense):
+                    foreach ($expense as $index => $val):
+                        ?>
+                        <tr>
+                            <td><?php echo anchor('admin/reporting/view/sub_cat_id/' . $key . '?' . $_SERVER['QUERY_STRING'], $index); ?> </td>
+                            <td><?php echo $val; ?> </td>
+                            <td><?php echo 'Euro' ?> </td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <tr>
+                    <td colspan="3"> We could not find any report.</td>
+                </tr>
+
+            <?php endif; ?>
+
+    </table>
+</section>
 
 <section>
     <h2><?php echo count($expenses); ?>: &nbsp;Transactions</h2>
     <?php
 //    echo "<pre>";
-//    print_r($defaultValues);
+//    print_r($_POST);
 //    echo "</pre>";
     ?>
 
