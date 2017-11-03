@@ -86,14 +86,14 @@ class expense_m extends My_Model {
             $start_date = date("Y-m-01", strtotime("-6 month"));
             $end_date = date('Y-m-d');
         } elseif ($id == 6) {
-            $start_date = date("Y-m-01");
+            $start_date = date("Y-m-01", strtotime("-12 month"));
             $end_date = date('Y-m-d');
         } elseif ($id == 7) {
             $start_date = date("Y-01-01");
             $end_date = date('Y-m-d');
         } elseif ($id == 8) {
             $start_date = date("Y-01-01", strtotime("-1 year"));
-            echo $end_date = date("Y-12-31", strtotime("-1 year"));
+            $end_date = date("Y-12-31", strtotime("-1 year"));
         } else {
             $start_date = date('Y-m-01');
             $end_date = date('Y-m-d');
@@ -135,6 +135,8 @@ class expense_m extends My_Model {
     }
 
     public function expenseDetailView($cat_id = null, $id = null, $accountID = null, $sub_cat_id = null) {
+        
+//        echo $cat_id. "/". $id. "/". $accountID;
         if ($id == 3) {
             $start_date = date('Y-m-01');
             $end_date = date('Y-m-d');
@@ -145,7 +147,7 @@ class expense_m extends My_Model {
             $start_date = date("Y-m-01", strtotime("-6 month"));
             $end_date = date('Y-m-d');
         } elseif ($id == 6) {
-            $start_date = date("Y-m-01");
+            $start_date = date("Y-m-01", strtotime("-12 month"));
             $end_date = date('Y-m-d');
         } elseif ($id == 7) {
             $start_date = date("Y-01-01");
@@ -183,7 +185,7 @@ class expense_m extends My_Model {
             $start_date = date("Y-m-01", strtotime("-6 month"));
             $end_date = date('Y-m-d');
         } elseif ($id == 6) {
-            $start_date = date("Y-m-01");
+            $start_date = date("Y-m-01", strtotime("-12 month"));
             $end_date = date('Y-m-d');
         } elseif ($id == 7) {
             $start_date = date("Y-01-01");

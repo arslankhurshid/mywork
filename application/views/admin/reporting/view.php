@@ -12,12 +12,16 @@
         </thead>
         <tbody>
             <?php
+//                       echo "<pre>";
+//                       print_r($sub_expenses);
+//                       echo "</pre>";
+            
             if (count($sub_expenses)):
                 foreach ($sub_expenses as $key => $expense):
                     foreach ($expense as $index => $val):
                         ?>
                         <tr>
-                            <td><?php echo anchor('admin/reporting/view/sub_cat_id/' . $key . '?' . $_SERVER['QUERY_STRING'], $index); ?> </td>
+                            <td><?php echo anchor('admin/reporting/viewDetails/' . $this->uri->segment(4) . '/'. $this->uri->segment(5) . '/'. $this->uri->segment(6) . '/' . $key, $index); ?> </td>
                             <td><?php echo $val; ?> </td>
                             <td><?php echo 'Euro' ?> </td>
                         </tr>
@@ -55,6 +59,9 @@
         </thead>
         <tbody>
             <?php
+//            echo "<pre>";
+//            print_r($expenses);
+//            echo "</pre>";
             if (count($expenses)):
                 foreach ($expenses as $expense):
                     ?>
