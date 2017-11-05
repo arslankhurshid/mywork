@@ -3,7 +3,7 @@
     <h2>Reporting</h2>
     <?php
 //    echo "<pre>";
-//    print_r($expenses);
+//    print_r($postData);
 //    echo "</pre>";
     ?>
     <?php echo form_open('', array('onsubmit' => 'return validate();')); ?>
@@ -29,7 +29,7 @@
             $data = array(
                 'name' => 'date_from',
                 'id' => '',
-                'value' => $report->date_from,
+                'value'=> $this->input->post('date_from') ? $this->input->post('date_from') : $report->date_from,
                 'style' => 'width:15%; height:8%',
                 'class' => 'datepicker'
             );
@@ -39,7 +39,7 @@
             $data = array(
                 'name' => 'date_to',
                 'id' => '',
-                'value' => $report->date_to,
+                'value'=> $this->input->post('date_to') ? $this->input->post('date_to') : $report->date_to,
                 'style' => 'width:15%; height:8%',
                 'class' => 'datepicker'
             );
@@ -64,7 +64,19 @@
             </tr>
         </thead>
         <tbody>
-
+            <?php if (isset($postData) && !empty(count($postData))): ?>
+                <?php echo "<pre>";
+                print_r($date_from); echo "</pre>";?>
+                <?php foreach ($postData as $key => $array): ?>
+        <?php foreach ($array as $index => $data): ?>
+                        <tr>
+                            <td><?php echo anchor('admin/reporting/viewDetails/' . $key . '/' . $date_from . '/' . $date_to. '/' . $acc, $index); ?> </td>
+                            <td><?php echo $data; ?> </td>
+                            <td>Euro</td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php endforeach; ?>
+<?php endif; ?>
         </tbody>
 
     </table>
