@@ -11,14 +11,6 @@ class reports_m extends My_Model {
     protected $_timestamps = false;
     public $rules = array();
 
-    public function getDefaulValues() {
-        $data = array(
-            'Incoming', 'Outgoing'
-        );
-
-        return $data;
-    }
-
     public function get_new() {
         $report = new stdClass();
         $report->date_from = '';
@@ -27,25 +19,21 @@ class reports_m extends My_Model {
         return $report;
     }
 
-    
-    public function get_current_month_data($id = null, $single = null) {
-        $this->db->select('expenses.*, expenses.id as expense_id, expenses.title as expense_title, t3.id as category_id, t3.title as category_title, t4.title as sub_category, t4.id as sub_category_id,');
-        $this->db->join('expense_has_categories as t2', 'expenses.id = t2.expense_id', 'left');
-        $this->db->join('categories as t3', 't2.cat_id = t3.id', 'left');
-        $this->db->join('categories as t4', 't2.sub_cat_id = t4.id', 'left');
-        $this->db->where('expenses.date >=','2017-10-19');
-        $this->db->where('expenses.date <=','2017-10-23');
-        $catego = parent::get($id, $single);
-        echo $this->db->last_query();
-//        return parent::get($id, $single);
-    }
-    
-    public function get_user_dates()
-    {
+    public function get_user_dates() {
+
+//        $end_date = date('Y-m-d');
+//        $dateArray = array(
+//            'Current Month' => array('start_date' => date('Y-m-01'), 'end_date' => $end_date),
+//            'Last Month' => array('start_date' => date('Y-m-d', strtotime('first day of previous month')), 'end_date' => date('Y-m-d', strtotime('last day of previous month'))),
+//            'Last 6 Month' => array('start_date' => date("Y-m-01", strtotime("-6 month")), 'end_date' => $end_date),
+//            'Last 12 Month' => array('start_date' => date("Y-m-01", strtotime("-12 month")), 'end_date' => $end_date),
+//            'Current Year' => array('start_date' => date("Y-01-01"), 'end_date' => $end_date),
+//            'Last Year' => array('start_date' => date("Y-01-01", strtotime("-1 year")), 'end_date' => date("Y-12-31", strtotime("-1 year"))),
+//        );
         $dates = parent::get();
+
         $array = array();
-        foreach($dates as $date)
-        {
+        foreach ($dates as $date) {
             $array[$date->id] = $date->period;
         }
         return $array;

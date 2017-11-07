@@ -50,6 +50,7 @@ Class user_m extends My_Model {
                 'name' => $user->name,
                 'email' => $user->email,
                 'id' => $user->id,
+                'role_id' => $user->role_id,
                 'loggedin' => TRUE,
             );
             $this->session->set_userdata($data);

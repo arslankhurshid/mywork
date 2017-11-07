@@ -16,32 +16,43 @@ Class accounts extends Admin_Controller {
 
     public function edit($id = null) {
 
-        if ($id) {
-            $this->data['account'] = $this->accounts_m->get($id);
-            if (empty(count($this->data['account'])))
-                $this->data['errors'][] = "account could not be found";
-        }
-        else {
-            $this->data['account'] = $this->accounts_m->get_new();
-        }
+        $this->data['role'] = $this->session->role_id;
+//        echo $this->data['role'];
+        if ($this->session->role_id == 1) {
 
-        $rules = $this->accounts_m->rules;
-        $this->form_validation->set_rules($rules);
+            $accounts = $this->accounts_m->get_user_account();
+            $count = count($accounts);
+            if ($count == 2) {
+                $this->data['accout_type'] = "You are only authorised one account";
+            }
+        } else {
+            if ($id) {
+                $this->data['account'] = $this->accounts_m->get($id);
+                if (empty(count($this->data['account'])))
+                    $this->data['errors'][] = "account could not be found";
+            }
+            else {
+                $this->data['account'] = $this->accounts_m->get_new();
+            }
 
-        if ($this->form_validation->run() == TRUE) {
-            // INSERT NEW ACCOUNT
-            $data = $this->accounts_m->array_from_post(array(
-                'title',
-                'description',
-                'amount',
-                'balance',
-                'user_id'
-            ));
+            $rules = $this->accounts_m->rules;
+            $this->form_validation->set_rules($rules);
 
-            $userID['user_id'] = $this->session->id;
-            $data = array_merge($data, $userID);
-            $this->accounts_m->save($data, $id);
-            redirect('admin/accounts');
+            if ($this->form_validation->run() == TRUE) {
+                // INSERT NEW ACCOUNT
+                $data = $this->accounts_m->array_from_post(array(
+                    'title',
+                    'description',
+                    'amount',
+                    'balance',
+                    'user_id'
+                ));
+
+                $userID['user_id'] = $this->session->id;
+                $data = array_merge($data, $userID);
+                $this->accounts_m->save($data, $id);
+                redirect('admin/accounts');
+            }
         }
 
 

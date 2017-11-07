@@ -3,7 +3,7 @@
     <h2>Reporting</h2>
     <?php
 //    echo "<pre>";
-//    print_r($expenses);
+//    print_r($userAccounts);
 //    echo "</pre>";
     ?>
     <?php echo form_open('', array('onsubmit' => 'return validate();')); ?>
@@ -29,7 +29,7 @@
             $data = array(
                 'name' => 'date_from',
                 'id' => '',
-                'value' => $report->date_from,
+                'value' => $this->input->post('date_from') ? $this->input->post('date_from') : $report->date_from,
                 'style' => 'width:15%; height:8%',
                 'class' => 'datepicker'
             );
@@ -39,13 +39,15 @@
             $data = array(
                 'name' => 'date_to',
                 'id' => '',
-                'value' => $report->date_to,
+                'value' => $this->input->post('date_to') ? $this->input->post('date_to') : $report->date_to,
                 'style' => 'width:15%; height:8%',
                 'class' => 'datepicker'
             );
             echo form_input($data);
             ?>
-            <?php echo form_submit('submit', 'Apply', 'class="btn btn-primary btn-xs"'); ?>
+            <?php
+            echo form_button('button', 'Apply', 'class="btn btn-primary btn-xs" onClick="some_function()"');
+            ?>
             <?php echo form_reset('reset', 'reset', 'class="btn btn-primary btn-xs"'); ?>
             <div class="clr"></div>
         </div>
@@ -63,7 +65,7 @@
 
             </tr>
         </thead>
-        <tbody>
+        <tbody id="grid">
 
         </tbody>
 
@@ -71,6 +73,49 @@
 </section>
 
 <script>
+    function some_function()
+    {
+        var str = $("form").serialize();
+        var date_from = document.getElementsByName("date_from")[0].value;
+        var to_bank = document.getElementsByName("to_bank")[0].value;
+        var date_to = document.getElementsByName("date_to")[0].value;
+//        console.info(date_from);
+        $.ajax({
+            type: "POST",
+            url: "reporting/displayReports/",
+            data: str,
+            dataType: "json",
+            success: function (data) {
+//                console.info(data);
+                if (Object.keys(data).length === 0)
+                {
+                    $("#grid").empty();
+                    var tr;
+                    tr = $('<tr/>');
+                    tr.append("<td>" + "No Record Found" + "</td>");
+                    $('table').append(tr);
+                } else {
+                    $("#grid").empty();
+                    $.each(data, function (key, value) {
+//                        $.each(value, function (k, val) {
+                        var tr;
+
+                        tr = $('<tr/>');
+                        tr.append("<td>" + value.category_title.link("reporting/viewDetails/" + value.cat_id + "/" + Date.parse(value.date_from) / 1000 + "/" + Date.parse(value.date_to) / 1000 + "/" + value.account_id) + "</td>");
+                        tr.append("<td>" + value.total + "</td>");
+                        tr.append("<td>" + "Euro" + "</td>");
+                        $('table').append(tr);
+
+//                        });
+
+                    });
+                }
+
+            }
+        });
+    }
+
+
     for (i = 1; i <= 3; i++)
     {
         var drop_down = document.getElementById("my_id" + i);
@@ -78,7 +123,7 @@
             var drop_down_type = $('#my_id1').find('option:selected').val();
             var drop_down_account = $('#my_id2').find('option:selected').val();
             var drop_down_date = $('#my_id3').find('option:selected').val();
-            console.info(drop_down_date);
+//            console.info(drop_down_date);
 
             $.ajax({
                 type: "POST",
@@ -89,26 +134,26 @@
                     if (Object.keys(data).length === 0)
                     {
 
-                        $('tbody').empty();
+                        $("#grid").empty();
                         var tr;
 
                         tr = $('<tr/>');
                         tr.append("<td>" + "No Record Found" + "</td>");
                         $('table').append(tr);
                     } else {
-                        console.info(data);
-                        $('tbody').empty();
+//                        console.info(data);
+                        $("#grid").empty();
                         $.each(data, function (key, value) {
-                            $.each(value, function (k, val) {
-                                var tr;
+//                            $.each(value, function (k, val) {
+                            var tr;
 
-                                tr = $('<tr/>');
-                                tr.append("<td>" + k.link("reporting/viewDetails/" + key + "/" + drop_down_date + "/" + drop_down_account) + "</td>");
-                                tr.append("<td>" + val + "</td>");
-                                tr.append("<td>" + "Euro" + "</td>");
-                                $('table').append(tr);
+                            tr = $('<tr/>');
+                            tr.append("<td>" + value.category_title.link("reporting/viewDetails/" + value.cat_id + "/" + Date.parse(value.date_from) / 1000 + "/" + Date.parse(value.date_to) / 1000 + "/" + value.account_id) + "</td>");
+                            tr.append("<td>" + value.total + "</td>");
+                            tr.append("<td>" + "Euro" + "</td>");
+                            $('table').append(tr);
 
-                            });
+//                            });
 
                         });
                     }
@@ -132,23 +177,30 @@
 //            data: {data: $(dataString).serializeArray()},
             cache: false,
             success: function (data) {
+//                console.info(data);
+//                console.info(url);
+                $("#grid").empty();
                 $.each(data, function (key, value) {
-                    $.each(value, function (k, val) {
+//                    console.info(value.category_title);
+//                    $.each(value, function (k, val) {
 
-                        var tr;
-                        tr = $('<tr/>');
-                        tr.append("<td>" + k.link("reporting/viewDetails/" + key + "/" + drop_down_date + "/" + drop_down_account) + "</td>");
-                        tr.append("<td>" + val + "</td>");
-                        tr.append("<td>" + "Euro" + "</td>");
+                    var tr;
+                    tr = $('<tr/>');
+                    tr.append("<td>" + value.category_title.link("reporting/viewDetails/" + value.cat_id + "/" + Date.parse(value.date_from) / 1000 + "/" + Date.parse(value.date_to) / 1000 + "/" + value.account_id) + "</td>");
+                    tr.append("<td>" + value.total + "</td>");
+                    tr.append("<td>" + "Euro" + "</td>");
 
-                        $('table').append(tr);
+                    $('table').append(tr);
 
-                    });
+//                    });
 
 
                 });
 
-            }
+            },
+            error: function (e) {
+//                console.info(e));
+            },
         });
 
     });

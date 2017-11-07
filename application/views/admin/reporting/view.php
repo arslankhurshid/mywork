@@ -1,5 +1,6 @@
 <?php ?>
 <h2>Sub-Categories</h2>
+<?php echo anchor('admin/reporting/viewDetails/' . $this->uri->segment(4) . '/' . $this->uri->segment(5) . '/' . $this->uri->segment(6), '<span class="glyphicon glyphicon-plus"> </span>Show All'); ?>
 <section>
     <table class="table table-striped" width="100%">
         <thead>
@@ -12,20 +13,29 @@
         </thead>
         <tbody>
             <?php
-//                       echo "<pre>";
-//                       print_r($sub_expenses);
-//                       echo "</pre>";
-            
+//            echo "<pre>";
+//            print_r($sub_expenses);
+//            echo "</pre>";
+            ?>
+            <?php
             if (count($sub_expenses)):
                 foreach ($sub_expenses as $key => $expense):
-                    foreach ($expense as $index => $val):
-                        ?>
-                        <tr>
-                            <td><?php echo anchor('admin/reporting/viewDetails/' . $this->uri->segment(4) . '/'. $this->uri->segment(5) . '/'. $this->uri->segment(6) . '/' . $key, $index); ?> </td>
-                            <td><?php echo $val; ?> </td>
-                            <td><?php echo 'Euro' ?> </td>
-                        </tr>
-                    <?php endforeach; ?>
+
+//                    foreach ($expense as $index => $val):
+//                        foreach ($val as $ind => $v):
+                    ?>
+                    <?php
+//                        echo "<pre>";
+//                        print_r($val);
+//                        echo "</pre>";
+                    ?>
+                    <tr>
+                        <td><?php echo anchor('admin/reporting/viewDetails/' . $expense['cat_id'] . '/' . $expense['date_from'] . '/' . $expense['date_to'] . '/' . $expense['account_id'] . '/' . $expense['sub_category_id'], $expense['sub_category_title']); ?> </td>
+                        <td><?php echo $expense['total']; ?> </td>
+                        <td><?php echo 'Euro' ?> </td>
+                    </tr>
+                    <?php // endforeach; ?>
+                    <?php // endforeach; ?>
                 <?php endforeach; ?>
             <?php else: ?>
                 <tr>

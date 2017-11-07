@@ -124,7 +124,6 @@ class categories_m extends My_Model {
                 $array[$cat['parent_id']]['children'][] = $cat;
             }
         }
-
         return $array;
     }
 

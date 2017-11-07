@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Erstellungszeit: 02. Nov 2017 um 16:58
+-- Erstellungszeit: 07. Nov 2017 um 16:51
 -- Server-Version: 10.1.19-MariaDB
 -- PHP-Version: 5.6.28
 
@@ -42,8 +42,8 @@ CREATE TABLE `accounts` (
 --
 
 INSERT INTO `accounts` (`id`, `title`, `description`, `amount`, `balance`, `created`, `modified`, `user_id`) VALUES
-(3, 'Allied Bank Limited', 'Saving Account', 15000, 292, '2017-10-25 11:43:03', '2017-11-02 16:34:26', 1),
-(4, 'Habib Bank ltd', 'Salary Account', 50000, 500, '2017-10-25 11:43:44', '2017-10-31 10:12:29', 1);
+(3, 'Allied Bank Limited', 'Saving Account', 15000, 197, '2017-10-25 11:43:03', '2017-11-07 15:42:03', 1),
+(4, 'Habib Bank ltd', 'Salary Account', 50000, 430, '2017-10-25 11:43:44', '2017-11-07 16:03:25', 1);
 
 -- --------------------------------------------------------
 
@@ -88,12 +88,18 @@ CREATE TABLE `categories` (
 --
 
 INSERT INTO `categories` (`id`, `title`, `created`, `order`, `modified`, `parent_id`) VALUES
-(48, 'Car', '2017-10-31 13:02:07', 0, '2017-10-31 13:02:07', 0),
-(49, 'Petrol', '2017-10-31 13:02:14', 1, '2017-10-31 13:02:14', 48),
-(50, 'Bills', '2017-10-31 13:02:28', 0, '2017-10-31 13:02:28', 0),
-(51, 'Electricity Bill', '2017-10-31 13:02:35', 1, '2017-10-31 13:02:35', 50),
-(52, 'Water', '2017-10-31 13:02:47', 2, '2017-10-31 13:02:47', 50),
-(53, 'Parking', '2017-11-02 08:53:51', 2, '2017-11-02 08:53:51', 48);
+(48, 'Car', '2017-10-31 13:02:07', 1, '2017-10-31 13:02:07', 0),
+(49, 'Petrol', '2017-10-31 13:02:14', 2, '2017-10-31 13:02:14', 48),
+(50, 'Bills', '2017-10-31 13:02:28', 10, '2017-10-31 13:02:28', 0),
+(51, 'Electricity Bill', '2017-10-31 13:02:35', 11, '2017-10-31 13:02:35', 50),
+(52, 'Water', '2017-10-31 13:02:47', 12, '2017-10-31 13:02:47', 50),
+(53, 'Parking', '2017-11-02 08:53:51', 3, '2017-11-02 08:53:51', 48),
+(54, 'Health & Care', '2017-11-07 14:45:45', 7, '2017-11-07 14:45:45', 0),
+(55, 'Cosmetics', '2017-11-07 14:46:16', 8, '2017-11-07 14:46:16', 54),
+(56, 'Life & Health Insurance', '2017-11-07 14:47:47', 9, '2017-11-07 14:48:56', 54),
+(57, 'Food & Dining', '2017-11-07 16:01:01', 4, '2017-11-07 16:01:01', 0),
+(58, 'Groceries', '2017-11-07 16:01:28', 5, '2017-11-07 16:01:28', 57),
+(59, 'Restaurant', '2017-11-07 16:01:48', 6, '2017-11-07 16:01:48', 57);
 
 -- --------------------------------------------------------
 
@@ -122,23 +128,29 @@ CREATE TABLE `expenses` (
   `amount` text NOT NULL,
   `created` datetime NOT NULL,
   `modified` datetime NOT NULL,
-  `account_id` int(11) NOT NULL
+  `account_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Daten für Tabelle `expenses`
 --
 
-INSERT INTO `expenses` (`id`, `title`, `date`, `amount`, `created`, `modified`, `account_id`) VALUES
-(50, 'September Petrol', '2017-09-01', '50', '2017-10-31 13:03:37', '2017-10-31 13:03:37', 3),
-(51, 'October Petrol', '2017-10-31', '10', '2017-10-31 13:03:57', '2017-10-31 13:03:57', 3),
-(52, 'Sep bill', '2017-09-01', '50', '2017-10-31 13:04:22', '2017-10-31 13:04:22', 3),
-(53, 'Water October bill', '2017-10-31', '50', '2017-10-31 13:04:36', '2017-10-31 13:04:36', 3),
-(54, 'Jakomini Car Parking Ticket', '2017-10-25', '5', '2017-11-02 08:54:32', '2017-11-02 08:54:32', 3),
-(55, 'Siesberg Car Parking Ticket', '2017-10-12', '3', '2017-11-02 08:55:54', '2017-11-02 08:55:54', 3),
-(56, 'November bill', '2017-11-02', '20', '2017-11-02 16:03:38', '2017-11-02 16:03:38', 3),
-(57, 'Water November Bill', '2017-11-02', '10', '2017-11-02 16:06:31', '2017-11-02 16:06:31', 3),
-(58, 'Petrol November', '2017-11-02', '10', '2017-11-02 16:34:26', '2017-11-02 16:34:26', 3);
+INSERT INTO `expenses` (`id`, `title`, `date`, `amount`, `created`, `modified`, `account_id`, `user_id`) VALUES
+(50, 'September Petrol', '2017-09-01', '50', '2017-10-31 13:03:37', '2017-10-31 13:03:37', 3, 1),
+(51, 'October Petrol', '2017-10-31', '10', '2017-10-31 13:03:57', '2017-10-31 13:03:57', 3, 1),
+(52, 'Sep bill', '2017-09-01', '50', '2017-10-31 13:04:22', '2017-10-31 13:04:22', 3, 1),
+(53, 'Water October bill', '2017-10-31', '50', '2017-10-31 13:04:36', '2017-10-31 13:04:36', 3, 1),
+(54, 'Jakomini Car Parking Ticket', '2017-10-25', '5', '2017-11-02 08:54:32', '2017-11-02 08:54:32', 3, 1),
+(55, 'Siesberg Car Parking Ticket', '2017-10-12', '3', '2017-11-02 08:55:54', '2017-11-02 08:55:54', 3, 1),
+(56, 'November bill', '2017-11-02', '20', '2017-11-02 16:03:38', '2017-11-02 16:03:38', 3, 1),
+(57, 'Water November Bill', '2017-11-02', '10', '2017-11-02 16:06:31', '2017-11-02 16:06:31', 3, 1),
+(58, 'Petrol November', '2017-11-02', '10', '2017-11-02 16:34:26', '2017-11-02 16:34:26', 3, 1),
+(59, 'Face Wash', '2017-11-07', '25', '2017-11-07 14:46:54', '2017-11-07 14:46:54', 3, 1),
+(60, 'November Insurance', '2017-11-07', '50', '2017-11-07 14:49:29', '2017-11-07 14:49:29', 3, 1),
+(61, 'Shampo', '2017-11-07', '10', '2017-11-07 14:57:22', '2017-11-07 15:42:03', 3, 1),
+(62, 'November Grocery', '2017-11-07', '20', '2017-11-07 16:02:44', '2017-11-07 16:02:44', 4, 1),
+(63, 'Habibi Restaurant', '2017-11-07', '50', '2017-11-07 16:03:25', '2017-11-07 16:03:25', 4, 1);
 
 -- --------------------------------------------------------
 
@@ -166,7 +178,12 @@ INSERT INTO `expense_has_categories` (`id`, `expense_id`, `cat_id`, `sub_cat_id`
 (25, 55, 48, 53),
 (26, 56, 50, 51),
 (27, 57, 50, 52),
-(28, 58, 48, 49);
+(28, 58, 48, 49),
+(29, 59, 54, 55),
+(30, 60, 54, 56),
+(31, 61, 54, 55),
+(32, 62, 57, 58),
+(33, 63, 57, 59);
 
 -- --------------------------------------------------------
 
@@ -245,19 +262,20 @@ CREATE TABLE `users` (
   `id` int(11) UNSIGNED NOT NULL,
   `email` varchar(100) NOT NULL,
   `password` varchar(200) DEFAULT NULL,
-  `name` varchar(120) NOT NULL
+  `name` varchar(120) NOT NULL,
+  `role_id` int(11) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Daten für Tabelle `users`
 --
 
-INSERT INTO `users` (`id`, `email`, `password`, `name`) VALUES
-(1, 'admin@gmail.com', '110D0E326BF837EF65906232963ECE4FFB343AA03A56A53541D0CA1AE3EE1FEDD91762F9AB0D40584FAE149F5B6EA646901FFE11567F9AB65DE41D5F249F1B73', 'Arslan Khurshid'),
-(3, 'nauman@gmail.com', '2a46cefab56d4f2516b2e85e1c3d6d57f2d075cbeae203f76d1a004646afeecd002e0da9f3ba10910057db024589aabd8ef4868f668b8fda6758d771c0550aef', 'Nauman Khurshid'),
-(4, 'test@gmail.com', 'e6c5b7619920b75656083ba4e5e589ba65b284d9e3db1af927c3706ba8f14a49821b3095a0ed837d50998d0172fd1869286e64cda0af1ade312a35ce88fccd70', 'Test User'),
-(5, 'test2@gmail.com', '2a46cefab56d4f2516b2e85e1c3d6d57f2d075cbeae203f76d1a004646afeecd002e0da9f3ba10910057db024589aabd8ef4868f668b8fda6758d771c0550aef', 'Test User2'),
-(6, 'm.arslan.khurshid@gmail.com', '8ba04fec45ea88277647894710b7e2db0b68537b219565590ac85017e0fdccecb56c9da97fd5999c8a6190d4d430f9e77c156f736d288588d7c3d1f4402aa548', 'Malik Arslan Khurshid');
+INSERT INTO `users` (`id`, `email`, `password`, `name`, `role_id`) VALUES
+(1, 'admin@gmail.com', '110D0E326BF837EF65906232963ECE4FFB343AA03A56A53541D0CA1AE3EE1FEDD91762F9AB0D40584FAE149F5B6EA646901FFE11567F9AB65DE41D5F249F1B73', 'Arslan Khurshid', 1),
+(3, 'nauman@gmail.com', '2a46cefab56d4f2516b2e85e1c3d6d57f2d075cbeae203f76d1a004646afeecd002e0da9f3ba10910057db024589aabd8ef4868f668b8fda6758d771c0550aef', 'Nauman Khurshid', 1),
+(4, 'test@gmail.com', 'e6c5b7619920b75656083ba4e5e589ba65b284d9e3db1af927c3706ba8f14a49821b3095a0ed837d50998d0172fd1869286e64cda0af1ade312a35ce88fccd70', 'Test User', 1),
+(5, 'test2@gmail.com', '2a46cefab56d4f2516b2e85e1c3d6d57f2d075cbeae203f76d1a004646afeecd002e0da9f3ba10910057db024589aabd8ef4868f668b8fda6758d771c0550aef', 'Test User2', 1),
+(6, 'm.arslan.khurshid@gmail.com', '8ba04fec45ea88277647894710b7e2db0b68537b219565590ac85017e0fdccecb56c9da97fd5999c8a6190d4d430f9e77c156f736d288588d7c3d1f4402aa548', 'Malik Arslan Khurshid', 1);
 
 -- --------------------------------------------------------
 
@@ -365,17 +383,17 @@ ALTER TABLE `articles`
 -- AUTO_INCREMENT für Tabelle `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=60;
 --
 -- AUTO_INCREMENT für Tabelle `expenses`
 --
 ALTER TABLE `expenses`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
 --
 -- AUTO_INCREMENT für Tabelle `expense_has_categories`
 --
 ALTER TABLE `expense_has_categories`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 --
 -- AUTO_INCREMENT für Tabelle `pages`
 --

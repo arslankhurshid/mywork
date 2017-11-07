@@ -1,5 +1,7 @@
 <h3><?php echo empty($account->id) ? 'Add a new account' : 'Edit Account:' . '&nbsp' . $account->title ?></h3>
+<h3><?php print_r($accout_type); ?></h3>
 
+<?php exit();?>
 <?php if (!empty(validation_errors())): ?>
     <div class="alert alert-danger" id="errordiv">
         <?php echo validation_errors() ?>

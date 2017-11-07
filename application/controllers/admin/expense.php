@@ -56,8 +56,11 @@ class expense extends Admin_Controller {
                 'date',
                 'title',
                 'amount',
-                'account_id'
+                'account_id',
+                'user_id'
             ));
+            $userID['user_id'] = $this->session->id;
+            $data = array_merge($expense, $userID);
             $array['expense_id'] = $this->expense_m->save($expense, $id);
             if ($array['expense_id'] == '') {
                 $array['expense_id'] = $id;
