@@ -7,7 +7,9 @@ class expense extends Admin_Controller {
         $this->load->model('expense_m');
         $this->load->model('categories_m');
         $this->load->model('expense_has_cat_m');
+        $this->load->model('expense_has_employee_m');
         $this->load->model('accounts_m');
+        $this->load->model('employee_m');
     }
 
     public function index() {
@@ -22,6 +24,7 @@ class expense extends Admin_Controller {
         $array = array();
         $this->data['categories'] = $this->categories_m->get_no_parents();
         $this->data['accounts'] = $this->accounts_m->getUserAccouts();
+        $this->data['employees'] = $this->employee_m->get_all_employee();
         if ($id) {
             $this->data['expense'] = $this->expense_m->get_with_categories($id);
             if ($this->data['expense']->sub_category_id !== '') {
@@ -44,12 +47,12 @@ class expense extends Admin_Controller {
             // GET post data 
             // save new cat if posted
             if (isset($_POST) && $_POST['new_cat']) {
-                $array['cat_id'] = $this->categories_m->save_cat_return_id(array(
+                $cat_id = $this->categories_m->save_cat_return_id(array(
                     'title' => $this->input->post('new_cat'),
                         )
                 );
             } else {
-                $array['cat_id'] = $_POST['cat_id'];
+                $cat_id = $_POST['cat_id'];
             }
             // save expense here
             $expense = $this->expense_m->array_from_post(array(
@@ -60,14 +63,15 @@ class expense extends Admin_Controller {
                 'user_id'
             ));
             $userID['user_id'] = $this->session->id;
-            $data = array_merge($expense, $userID);
-            $array['expense_id'] = $this->expense_m->save($expense, $id);
-            if ($array['expense_id'] == '') {
-                $array['expense_id'] = $id;
+            $expense = array_merge($expense, $userID);
+            $lastInsertedExpenseID = $this->expense_m->save($expense, $id);
+            if ($lastInsertedExpenseID == '') {
+                $lastInsertedExpenseID = $id;
             }
-            $array['sub_cat_id'] = $this->input->post('sub_cat_id');
             // save cat to relational table
-            $this->expense_has_cat_m->save($array, $id);
+            $this->expense_has_cat_m->save(array('expense_id'=>$lastInsertedExpenseID,'sub_cat_id'=>$this->input->post('sub_cat_id'), 'cat_id'=>$cat_id), $id);
+            // save expense to employees relational table
+            $this->expense_has_employee_m->save(array('expense_id'=>$lastInsertedExpenseID, 'employee_id'=>$this->input->post('employee_id')), $id);
             // update selected account 
             $sum = array();
             $accounts = $this->accounts_m->get_user_account();

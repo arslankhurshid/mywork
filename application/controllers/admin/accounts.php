@@ -16,44 +16,48 @@ Class accounts extends Admin_Controller {
 
     public function edit($id = null) {
 
-        $this->data['role'] = $this->session->role_id;
-//        echo $this->data['role'];
+        $accounts = $this->accounts_m->get_user_account();
         if ($this->session->role_id == 1) {
-
-            $accounts = $this->accounts_m->get_user_account();
-            $count = count($accounts);
-            if ($count == 2) {
-                $this->data['accout_type'] = "You are only authorised one account";
+            // only one account is allowed
+            if (count($accounts) >= 1 || count($accounts) >= 6) {
+                $this->data['count_here'] = count($accounts);
+                $this->data['user_account_limit'] = "This account has a limit to " . count($accounts) . " Account";
             }
-        } else {
-            if ($id) {
-                $this->data['account'] = $this->accounts_m->get($id);
-                if (empty(count($this->data['account'])))
-                    $this->data['errors'][] = "account could not be found";
-            }
-            else {
-                $this->data['account'] = $this->accounts_m->get_new();
-            }
-
-            $rules = $this->accounts_m->rules;
-            $this->form_validation->set_rules($rules);
-
-            if ($this->form_validation->run() == TRUE) {
-                // INSERT NEW ACCOUNT
-                $data = $this->accounts_m->array_from_post(array(
-                    'title',
-                    'description',
-                    'amount',
-                    'balance',
-                    'user_id'
-                ));
-
-                $userID['user_id'] = $this->session->id;
-                $data = array_merge($data, $userID);
-                $this->accounts_m->save($data, $id);
-                redirect('admin/accounts');
+        } elseif ($this->session->role_id == 2) {
+            // maximum 5 accounts are allowed
+            if (count($accounts) >= 6) {
+                $this->data['count_here'] = count($accounts);
+                $this->data['user_account_limit'] = "This account has a limit to " . count($accounts) . " Accounts";
             }
         }
+        if ($id) {
+            $this->data['account'] = $this->accounts_m->get($id);
+            if (empty(count($this->data['account'])))
+                $this->data['errors'][] = "account could not be found";
+        }
+        else {
+            $this->data['account'] = $this->accounts_m->get_new();
+        }
+
+        $rules = $this->accounts_m->rules;
+        $this->form_validation->set_rules($rules);
+
+        if ($this->form_validation->run() == TRUE) {
+            // INSERT NEW ACCOUNT
+            $data = $this->accounts_m->array_from_post(array(
+                'title',
+                'description',
+                'amount',
+                'balance',
+                'user_id'
+            ));
+
+            $userID['user_id'] = $this->session->id;
+            $data = array_merge($data, $userID);
+            $this->accounts_m->save($data, $id);
+            redirect('admin/accounts');
+        }
+
 
 
         $this->data['subview'] = 'admin/accounts/edit';

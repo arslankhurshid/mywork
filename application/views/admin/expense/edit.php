@@ -7,13 +7,13 @@
 <?php endif; ?>
 <?php
 //echo "<pre>";
-//print_r($expense);
+//print_r($employee_expenses);
 //echo "</pre>";
 ?>
 
 <?php echo form_open(); ?>
 <table class="table">
-     <tr>
+    <tr>
         <td>Select Account:</td>
         <td><?php echo form_dropdown('account_id', $accounts, $this->input->post('account_id') ? $this->input->post('account_id') : $expense->account_id, 'class="btn btn-default dropdown-toggle btn-select2" id="account"'); ?></td>
     </tr>
@@ -27,6 +27,10 @@
     </tr>
     <tr id="subview_cat">
         <?php $this->load->view($subview_cat); // subview is set in Controller  ?>
+    </tr>
+    <tr>
+        <td>Employees:</td>
+        <td><?php echo form_dropdown('employee_id', $employees, $this->input->post('employee_id') ? $this->input->post('employees') : $expense->employee_id, 'class="btn btn-default dropdown-toggle btn-select2" id="my_id2"'); ?></td>
     </tr>
     <tr>
         <td>Date:</td>

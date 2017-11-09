@@ -48,6 +48,58 @@
 </section>
 
 <section>
+    <?php
+//    echo "<pre>";
+//    print_r($employee_expenses);
+//    echo "</pre>";
+    ?>
+    <div id="msgDivId">
+        <h3>Employee Details</h3>
+        <table id ="results-table" class="table table-striped" width="100%">
+            <thead>
+                <tr>
+                    <td >Employee Name</td>
+                    <td >Salary</td>
+                    <td >Advance</td>
+                    <td >Eidi</td>
+                    <td >Category</td>
+                </tr>
+            </thead>
+
+            <?php
+            if (count($employee_expenses)):
+                foreach ($employee_expenses as $key => $expense):
+                    ?>
+
+
+                    <tr>
+                        <td><?php echo anchor('admin/expense/edit/' . $key, $expense['employee_fname'] . ' ' . $expense['employee_lname']); ?> </td>
+                        <td><?php echo $expense['Salary']; ?> </td>
+                        <td><?php
+                            if (isset($expense['Advance'])) {
+                                echo $expense['Advance'];
+                            } else {
+                                echo "";
+                            }
+                            ?> </td>
+                        <td><?php
+                            if (isset($expense['Eidi'])) {
+                                echo $expense['Eidi'];
+                            } else {
+                                echo "";
+                            }
+                            ?> </td>
+                        <td><?php echo $expense['cat_name']; ?> </td>
+                    </tr>
+
+                <?php endforeach; ?>
+            <?php endif; ?>
+        </table>
+    </div>
+
+
+
+
     <h2><?php echo count($expenses); ?>: &nbsp;Transactions</h2>
     <?php
 //    echo "<pre>";
@@ -75,6 +127,7 @@
             if (count($expenses)):
                 foreach ($expenses as $expense):
                     ?>
+
                     <tr>
                         <td><?php echo $expense->date; ?> </td>
                         <td><?php echo anchor('admin/expense/edit/' . $expense->id, $expense->title); ?> </td>
@@ -93,3 +146,13 @@
 
     </table>
 </section>
+<script>
+
+
+    console.info($('#results-table > tbody > tr').length);
+    if ($('#results-table > tbody > tr').length == 0) {
+        $('#results-table > thead > tr').css('display', 'none');
+        document.getElementsByTagName('h3')[0].style.display = 'none';
+
+    }
+</script>

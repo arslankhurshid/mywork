@@ -34,10 +34,12 @@ class expense_m extends My_Model {
 
     public function joinQuery() {
         // Join with Categories and expenses
-        $this->db->select('expenses.*, expenses.id as expense_id, expenses.title as expense_title, t3.id as category_id, t3.title as category_title, t4.title as sub_category, t4.id as sub_category_id,');
+        $this->db->select('expenses.*, expenses.id as expense_id, expenses.title as expense_title, t3.id as category_id, t3.title as category_title,t5.employee_id,t6.fname as employee_fname,,t6.lname as employee_lname,t6.dep, t4.title as sub_category, t4.id as sub_category_id');
         $this->db->join('expense_has_categories as t2', 'expenses.id = t2.expense_id', 'left');
         $this->db->join('categories as t3', 't2.cat_id = t3.id', 'left');
         $this->db->join('categories as t4', 't2.sub_cat_id = t4.id', 'left');
+        $this->db->join('expense_has_employees as t5', 'expenses.id=t5.expense_id', 'left');
+        $this->db->join('employees as t6', 't5.employee_id=t6.id', 'left');
         $this->db->where('expenses.user_id=', $this->session->id);
     }
 
@@ -80,14 +82,16 @@ class expense_m extends My_Model {
     }
 
     public function get_with_categories($id = null, $single = null) {
+//        echo $id;
 //        $this->db->select('expenses.*, expenses.id as expense_id, expenses.title as expense_title, t3.id as category_id, t3.title as category_title, t4.title as sub_category, t4.id as sub_category_id,');
 //        $this->db->join('expense_has_categories as t2', 'expenses.id = t2.expense_id', 'left');
 //        $this->db->join('categories as t3', 't2.cat_id = t3.id', 'left');
 //        $this->db->join('categories as t4', 't2.sub_cat_id = t4.id', 'left');
 //        $catego = parent::get($id, $single);
         $this->joinQuery();
-//        echo $this->db->last_query();
+
         return parent::get($id, $single);
+//        echo $this->db->last_query();
     }
 
     public function delete($id) {
@@ -108,6 +112,7 @@ class expense_m extends My_Model {
         $expense->category_id = 0;
         $expense->sub_category_id = 0;
         $expense->account_id = 0;
+        $expense->employee_id = 0;
 
         return $expense;
     }
@@ -198,7 +203,56 @@ class expense_m extends My_Model {
                 }
             }
         }
+
         return $arr;
+    }
+
+    public function employeeExpenseDetailView($cat_id = null, $date_from = null, $date_to = null, $accountID = null, $sub_cat_id = null) {
+        $this->joinQuery();
+
+        $this->db->where('expenses.date >=', date('Y-m-d', $date_from));
+        $this->db->where('expenses.date <=', date('Y-m-d', $date_to));
+        $this->db->where('t3.id=', $cat_id);
+        if (!empty($sub_cat_id))
+            $this->db->where('t4.id=', $sub_cat_id);
+        if (!empty($accountID))
+            $this->db->where('expenses.account_id=', $accountID);
+        $this->db->order_by($this->_order_by);
+        $results = $this->db->get('expenses')->result_array();
+        $array = array();
+        $anotherArray = array();
+        $finalArray = array();
+
+        foreach ($results as $result) {
+
+            $array[$result['employee_id']][$result['sub_category']][] = $result['amount'];
+        }
+        foreach ($array as $index => $val) {
+            foreach ($val as $key => $v) {
+                $sum = array_sum($v);
+                $arr[$index][$key] = $sum;
+            }
+        }
+
+        foreach ($results as $result) {
+
+            $anotherArray[$result['employee_id']] = array(
+                'cat_id' => $result['category_id'],
+                'cat_name' => $result['category_title'],
+                'account_id' => $result['account_id'],
+                'employee_fname' => $result['employee_fname'],
+                'employee_lname' => $result['employee_lname'],
+                'date_from' => $date_from,
+                'date_to' => $date_to,
+            );
+        }
+
+        foreach ($arr as $key => $val) {
+            $val2 = $anotherArray[$key];
+            $finalArray[$key] = $val + $val2;
+        }
+        
+        return $finalArray;
     }
 
 }

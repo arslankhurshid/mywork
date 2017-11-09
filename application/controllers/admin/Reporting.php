@@ -40,6 +40,7 @@ class Reporting extends Admin_Controller {
     public function viewDetails($catID = null, $date_from = null, $date_to = null, $account_id = null, $sub_cat_id = null) {
         $this->data['expenses'] = $this->expense_m->expenseDetailView($catID, $date_from, $date_to, $account_id, $sub_cat_id);
         $this->data['sub_expenses'] = $this->expense_m->subExpenseDetailView($catID, $date_from, $date_to, $account_id);
+        $this->data['employee_expenses'] = $this->expense_m->employeeExpenseDetailView($catID, $date_from, $date_to, $account_id);
 
         $this->data['subview'] = 'admin/reporting/view';
         $this->load->view('admin/_layout_main', $this->data);
