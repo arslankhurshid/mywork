@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Erstellungszeit: 07. Nov 2017 um 16:51
+-- Erstellungszeit: 10. Nov 2017 um 12:45
 -- Server-Version: 10.1.19-MariaDB
 -- PHP-Version: 5.6.28
 
@@ -42,8 +42,9 @@ CREATE TABLE `accounts` (
 --
 
 INSERT INTO `accounts` (`id`, `title`, `description`, `amount`, `balance`, `created`, `modified`, `user_id`) VALUES
-(3, 'Allied Bank Limited', 'Saving Account', 15000, 197, '2017-10-25 11:43:03', '2017-11-07 15:42:03', 1),
-(4, 'Habib Bank ltd', 'Salary Account', 50000, 430, '2017-10-25 11:43:44', '2017-11-07 16:03:25', 1);
+(3, 'Allied Bank Limited', 'Saving Account', 15000, 10000, '2017-10-25 11:43:03', '2017-11-10 12:28:18', 1),
+(4, 'Habib Bank ltd', 'Salary Account', 50000, 430, '2017-10-25 11:43:44', '2017-11-07 16:03:25', 1),
+(6, 'Test Acc', 'nauman', 15, 10, '2017-11-08 15:16:50', '2017-11-08 15:16:50', 3);
 
 -- --------------------------------------------------------
 
@@ -99,7 +100,11 @@ INSERT INTO `categories` (`id`, `title`, `created`, `order`, `modified`, `parent
 (56, 'Life & Health Insurance', '2017-11-07 14:47:47', 9, '2017-11-07 14:48:56', 54),
 (57, 'Food & Dining', '2017-11-07 16:01:01', 4, '2017-11-07 16:01:01', 0),
 (58, 'Groceries', '2017-11-07 16:01:28', 5, '2017-11-07 16:01:28', 57),
-(59, 'Restaurant', '2017-11-07 16:01:48', 6, '2017-11-07 16:01:48', 57);
+(59, 'Restaurant', '2017-11-07 16:01:48', 6, '2017-11-07 16:01:48', 57),
+(60, 'Employee''s', '2017-11-08 10:59:57', 0, '2017-11-08 10:59:57', 0),
+(61, 'Salary', '2017-11-08 11:00:09', 1, '2017-11-08 11:00:09', 60),
+(62, 'Advance', '2017-11-08 11:00:19', 2, '2017-11-08 11:00:19', 60),
+(63, 'Eidi', '2017-11-08 11:00:25', 3, '2017-11-08 11:00:25', 60);
 
 -- --------------------------------------------------------
 
@@ -114,6 +119,29 @@ CREATE TABLE `ci_sessions` (
   `last_activity` int(10) UNSIGNED NOT NULL DEFAULT '0',
   `user_data` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `employees`
+--
+
+CREATE TABLE `employees` (
+  `id` int(11) NOT NULL,
+  `fname` varchar(100) NOT NULL,
+  `lname` varchar(100) NOT NULL,
+  `dep` varchar(100) NOT NULL,
+  `created` datetime NOT NULL,
+  `modified` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Daten für Tabelle `employees`
+--
+
+INSERT INTO `employees` (`id`, `fname`, `lname`, `dep`, `created`, `modified`) VALUES
+(1, 'Ahmed', 'Baig', 'Sales', '2017-11-08 16:19:53', '2017-11-08 16:19:53'),
+(2, 'Ali', 'Mirza', 'Sales', '2017-11-08 16:21:22', '2017-11-08 16:21:22');
 
 -- --------------------------------------------------------
 
@@ -150,7 +178,13 @@ INSERT INTO `expenses` (`id`, `title`, `date`, `amount`, `created`, `modified`, 
 (60, 'November Insurance', '2017-11-07', '50', '2017-11-07 14:49:29', '2017-11-07 14:49:29', 3, 1),
 (61, 'Shampo', '2017-11-07', '10', '2017-11-07 14:57:22', '2017-11-07 15:42:03', 3, 1),
 (62, 'November Grocery', '2017-11-07', '20', '2017-11-07 16:02:44', '2017-11-07 16:02:44', 4, 1),
-(63, 'Habibi Restaurant', '2017-11-07', '50', '2017-11-07 16:03:25', '2017-11-07 16:03:25', 4, 1);
+(63, 'Habibi Restaurant', '2017-11-07', '50', '2017-11-07 16:03:25', '2017-11-07 16:03:25', 4, 1),
+(74, 'November Salary', '2017-11-08', '20', '2017-11-08 17:41:52', '2017-11-08 17:41:52', 3, 1),
+(75, 'November Salary', '2017-11-09', '20', '2017-11-09 10:11:14', '2017-11-09 10:11:14', 3, 1),
+(76, 'October Salary', '2017-10-01', '20', '2017-11-09 11:23:10', '2017-11-09 11:23:10', 3, 1),
+(77, 'November Advance', '2017-11-09', '10', '2017-11-09 11:37:10', '2017-11-09 11:37:10', 3, 1),
+(78, 'October Advance', '2017-10-01', '20', '2017-11-09 11:37:54', '2017-11-09 11:37:54', 3, 1),
+(79, 'Eidi', '2017-11-10', '25', '2017-11-10 09:29:18', '2017-11-10 09:29:18', 3, 1);
 
 -- --------------------------------------------------------
 
@@ -183,7 +217,37 @@ INSERT INTO `expense_has_categories` (`id`, `expense_id`, `cat_id`, `sub_cat_id`
 (30, 60, 54, 56),
 (31, 61, 54, 55),
 (32, 62, 57, 58),
-(33, 63, 57, 59);
+(33, 63, 57, 59),
+(39, 74, 60, 61),
+(40, 75, 60, 61),
+(41, 76, 60, 61),
+(42, 77, 60, 62),
+(43, 78, 60, 62),
+(44, 79, 60, 63);
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `expense_has_employees`
+--
+
+CREATE TABLE `expense_has_employees` (
+  `id` int(11) NOT NULL,
+  `expense_id` int(11) NOT NULL,
+  `employee_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Daten für Tabelle `expense_has_employees`
+--
+
+INSERT INTO `expense_has_employees` (`id`, `expense_id`, `employee_id`) VALUES
+(3, 74, 1),
+(4, 75, 2),
+(5, 76, 2),
+(6, 77, 2),
+(7, 78, 2),
+(8, 79, 1);
 
 -- --------------------------------------------------------
 
@@ -271,7 +335,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `email`, `password`, `name`, `role_id`) VALUES
-(1, 'admin@gmail.com', '110D0E326BF837EF65906232963ECE4FFB343AA03A56A53541D0CA1AE3EE1FEDD91762F9AB0D40584FAE149F5B6EA646901FFE11567F9AB65DE41D5F249F1B73', 'Arslan Khurshid', 1),
+(1, 'admin@gmail.com', '110D0E326BF837EF65906232963ECE4FFB343AA03A56A53541D0CA1AE3EE1FEDD91762F9AB0D40584FAE149F5B6EA646901FFE11567F9AB65DE41D5F249F1B73', 'Arslan Khurshid', 2),
 (3, 'nauman@gmail.com', '2a46cefab56d4f2516b2e85e1c3d6d57f2d075cbeae203f76d1a004646afeecd002e0da9f3ba10910057db024589aabd8ef4868f668b8fda6758d771c0550aef', 'Nauman Khurshid', 1),
 (4, 'test@gmail.com', 'e6c5b7619920b75656083ba4e5e589ba65b284d9e3db1af927c3706ba8f14a49821b3095a0ed837d50998d0172fd1869286e64cda0af1ade312a35ce88fccd70', 'Test User', 1),
 (5, 'test2@gmail.com', '2a46cefab56d4f2516b2e85e1c3d6d57f2d075cbeae203f76d1a004646afeecd002e0da9f3ba10910057db024589aabd8ef4868f668b8fda6758d771c0550aef', 'Test User2', 1),
@@ -330,6 +394,12 @@ ALTER TABLE `ci_sessions`
   ADD KEY `last_activity_idx` (`last_activity`);
 
 --
+-- Indizes für die Tabelle `employees`
+--
+ALTER TABLE `employees`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indizes für die Tabelle `expenses`
 --
 ALTER TABLE `expenses`
@@ -339,6 +409,12 @@ ALTER TABLE `expenses`
 -- Indizes für die Tabelle `expense_has_categories`
 --
 ALTER TABLE `expense_has_categories`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indizes für die Tabelle `expense_has_employees`
+--
+ALTER TABLE `expense_has_employees`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -373,7 +449,7 @@ ALTER TABLE `user_transfer_amount`
 -- AUTO_INCREMENT für Tabelle `accounts`
 --
 ALTER TABLE `accounts`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT für Tabelle `articles`
 --
@@ -383,17 +459,27 @@ ALTER TABLE `articles`
 -- AUTO_INCREMENT für Tabelle `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=60;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
+--
+-- AUTO_INCREMENT für Tabelle `employees`
+--
+ALTER TABLE `employees`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT für Tabelle `expenses`
 --
 ALTER TABLE `expenses`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=80;
 --
 -- AUTO_INCREMENT für Tabelle `expense_has_categories`
 --
 ALTER TABLE `expense_has_categories`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
+--
+-- AUTO_INCREMENT für Tabelle `expense_has_employees`
+--
+ALTER TABLE `expense_has_employees`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 --
 -- AUTO_INCREMENT für Tabelle `pages`
 --

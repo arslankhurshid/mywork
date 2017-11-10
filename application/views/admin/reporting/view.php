@@ -1,6 +1,10 @@
 <?php ?>
 <h2>Sub-Categories</h2>
-<?php echo anchor('admin/reporting/viewDetails/' . $this->uri->segment(4) . '/' . $this->uri->segment(5) . '/' . $this->uri->segment(6), '<span class="glyphicon glyphicon-plus"> </span>Show All'); ?>
+<?php
+//print_r($cat_id)
+?>
+<?php echo anchor('admin/reporting/viewDetails/' . $cat_id. '/' . $date_from . '/' . $date_to. '/'. $account_id, '<span class="glyphicon glyphicon-plus"> </span>Show All'); ?>
+
 <section>
     <table class="table table-striped" width="100%">
         <thead>
@@ -70,28 +74,30 @@
             if (count($employee_expenses)):
                 foreach ($employee_expenses as $key => $expense):
                     ?>
+                    <?php
+                    if (!empty($key)):
+                        ?>
 
-
-                    <tr>
-                        <td><?php echo anchor('admin/expense/edit/' . $key, $expense['employee_fname'] . ' ' . $expense['employee_lname']); ?> </td>
-                        <td><?php echo $expense['Salary']; ?> </td>
-                        <td><?php
-                            if (isset($expense['Advance'])) {
-                                echo $expense['Advance'];
-                            } else {
-                                echo "";
-                            }
-                            ?> </td>
-                        <td><?php
-                            if (isset($expense['Eidi'])) {
-                                echo $expense['Eidi'];
-                            } else {
-                                echo "";
-                            }
-                            ?> </td>
-                        <td><?php echo $expense['cat_name']; ?> </td>
-                    </tr>
-
+                        <tr>
+                            <td><?php echo anchor('admin/reporting/viewDetails?cat_id=' . $expense['cat_id'] . "&date_from=" . $expense['date_from'] . "&date_to=" . $expense['date_to'] . "&account_id=" . $expense['account_id'] . "&employee_id=" . $key, $expense['employee_fname'] . ' ' . $expense['employee_lname']); ?> </td>
+                            <td><?php echo $expense['Salary']; ?> </td>
+                            <td><?php
+                                if (isset($expense['Advance'])) {
+                                    echo $expense['Advance'];
+                                } else {
+                                    echo "";
+                                }
+                                ?> </td>
+                            <td><?php
+                                if (isset($expense['Eidi'])) {
+                                    echo $expense['Eidi'];
+                                } else {
+                                    echo "";
+                                }
+                                ?> </td>
+                            <td><?php echo $expense['cat_name']; ?> </td>
+                        </tr>
+                    <?php endif; ?>
                 <?php endforeach; ?>
             <?php endif; ?>
         </table>
@@ -116,7 +122,6 @@
                 <td >Currency</td>
                 <td >Category</td>
                 <td >Sub-Category</td>
-
             </tr>
         </thead>
         <tbody>
@@ -135,6 +140,9 @@
                         <td><?php echo 'Euro' ?> </td>
                         <td><?php echo $expense->category_title; ?> </td>
                         <td><?php echo $expense->sub_category; ?> </td>
+                        <?php if (isset($expense->category_title) && $expense->category_title == 'Employee\'s'): ?>
+                            <td><?php echo $expense->employee_fname . " " . $expense->employee_lname; ?> </td>
+                        <?php endif; ?>
                     </tr>
                 <?php endforeach; ?>
             <?php else: ?>
@@ -149,10 +157,11 @@
 <script>
 
 
-    console.info($('#results-table > tbody > tr').length);
+//    console.info($('#results-table > tbody > tr').length);
     if ($('#results-table > tbody > tr').length == 0) {
         $('#results-table > thead > tr').css('display', 'none');
         document.getElementsByTagName('h3')[0].style.display = 'none';
 
     }
+    console.info(document.getElementById("hid"));
 </script>

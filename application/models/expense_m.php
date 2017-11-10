@@ -154,16 +154,22 @@ class expense_m extends My_Model {
     }
 
     public function expenseDetailView($cat_id = null, $date_from = null, $date_to = null, $accountID = null, $sub_cat_id = null) {
+        if (is_array($sub_cat_id) && !empty($sub_cat_id)) {
+            $this->db->where('t5.employee_id=', $sub_cat_id['employee_id']);
+        } else {
+            if (!empty($sub_cat_id))
+                $this->db->where('t4.id=', $sub_cat_id);
+        }
 //        $get_dates = $this->dateQuery($id);
         $this->joinQuery();
 
         $this->db->where('expenses.date >=', date('Y-m-d', $date_from));
         $this->db->where('expenses.date <=', date('Y-m-d', $date_to));
         $this->db->where('t3.id=', $cat_id);
-        if (!empty($sub_cat_id))
-            $this->db->where('t4.id=', $sub_cat_id);
+
         if (!empty($accountID))
             $this->db->where('expenses.account_id=', $accountID);
+
         $result = parent::get();
 //        echo $this->db->last_query();
 
@@ -251,7 +257,7 @@ class expense_m extends My_Model {
             $val2 = $anotherArray[$key];
             $finalArray[$key] = $val + $val2;
         }
-        
+
         return $finalArray;
     }
 

@@ -38,10 +38,22 @@ class Reporting extends Admin_Controller {
 //    }
 
     public function viewDetails($catID = null, $date_from = null, $date_to = null, $account_id = null, $sub_cat_id = null) {
+
+        if (isset($_REQUEST) && !empty($_REQUEST)) {
+            $catID = $_REQUEST['cat_id'];
+            $date_from = $_REQUEST['date_from'];
+            $date_to = $_REQUEST['date_to'];
+            $account_id = $_REQUEST['account_id'];
+            $sub_cat_id = array('employee_id' => $_REQUEST['employee_id']);
+        }
         $this->data['expenses'] = $this->expense_m->expenseDetailView($catID, $date_from, $date_to, $account_id, $sub_cat_id);
         $this->data['sub_expenses'] = $this->expense_m->subExpenseDetailView($catID, $date_from, $date_to, $account_id);
         $this->data['employee_expenses'] = $this->expense_m->employeeExpenseDetailView($catID, $date_from, $date_to, $account_id);
 
+        $this->data['cat_id'] = $catID;
+        $this->data['date_from'] = $date_from;
+        $this->data['date_to'] = $date_to;
+        $this->data['account_id'] = $account_id;
         $this->data['subview'] = 'admin/reporting/view';
         $this->load->view('admin/_layout_main', $this->data);
     }
